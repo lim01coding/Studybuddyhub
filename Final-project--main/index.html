@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Buddy Hub Chat - Login/Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(120deg, #e0e7ff 0%, #f4f6fb 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .auth-wrapper {
+      display: flex;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(76, 110, 245, 0.12);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      min-height: 520px;
+    }
+    .auth-illustration {
+      background: linear-gradient(135deg, #4a90e2 60%, #6ee7b7 100%);
+      color: #fff;
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2em 1.5em;
+      min-width: 320px;
+    }
+    .auth-illustration .fa-graduation-cap {
+      font-size: 4em;
+      margin-bottom: 0.5em;
+      color: #fff;
+      filter: drop-shadow(0 2px 8px #357ab8aa);
+    }
+    .auth-illustration h1 {
+      font-size: 2.1em;
+      font-weight: 700;
+      margin: 0.2em 0 0.5em 0;
+      letter-spacing: 1px;
+    }
+    .auth-illustration p {
+      font-size: 1.1em;
+      margin: 0 0 1.5em 0;
+      opacity: 0.95;
+    }
+    .study-books {
+      width: 90%;
+      max-width: 220px;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      display: block;
+    }
+    .auth-form {
+      flex: 1;
+      padding: 2.5em 2em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 320px;
+    }
+    .auth-form h2 {
+      text-align: center;
+      color: #4a90e2;
+      margin-bottom: 1.2em;
+      font-weight: 700;
+      font-size: 1.6em;
+      letter-spacing: 1px;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 1.3em;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 0.9em 2.5em 0.9em 1em;
+      border: 1.5px solid #e0e7ff;
+      border-radius: 7px;
+      font-size: 1em;
+      background: #f9fafb;
+      transition: border 0.2s;
+      outline: none;
+    }
+    .input-group input:focus {
+      border: 1.5px solid #4a90e2;
+      background: #f0f7ff;
+    }
+    .input-group .fa-solid {
+      position: absolute;
+      right: 1em;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b0b7c3;
+      font-size: 1.1em;
+    }
+    button {
+      width: 100%;
+      padding: 0.9em;
+      background: linear-gradient(90deg, #4a90e2 60%, #6ee7b7 100%);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 1em;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px #4a90e22a;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #357ab8 60%, #34d399 100%);
+      box-shadow: 0 4px 16px #4a90e23a;
+    }
+    .switch-link {
+      text-align: center;
+      color: #4a90e2;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 1em;
+      margin-top: 0.5em;
+      font-weight: 500;
+    }
+    .error {
+      color: #d32f2f;
+      margin-bottom: 1em;
+      text-align: center;
+      font-size: 1em;
+      font-weight: 500;
+    }
+    .user-area {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100%;
+      padding: 1em;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #4a90e2;
+      margin-right: 0.5em;
+      display: inline-block;
+    }
+    .user-area span {
+      color: #333;
+      font-weight: 500;
+      margin-right: 1em;
+    }
+    .logout-btn {
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5em 1em;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .logout-btn:hover {
+      background: #c62828;
+    }
+    @media (max-width: 900px) {
+      .auth-wrapper { flex-direction: column; min-height: unset; }
+      .auth-illustration { min-width: unset; padding: 2em 1em; }
+      .auth-form { min-width: unset; padding: 2em 1em; }
+    }
+    @media (max-width: 600px) {
+      .auth-illustration { display: none; }
+      .auth-form { width: 100%; }
+      .auth-wrapper { box-shadow: none; border-radius: 0; }
+    }
+  </style>
+  <script>
+    // Apply dark mode before page renders
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+      document.body && document.body.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.body && document.body.classList.remove("dark");
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900 min-h-screen py-8 px-2 transition">
+  <div class="auth-wrapper">
+    <div class="auth-illustration">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <h1>Study Buddy Hub</h1>
+      <p>Organize, collaborate, and succeed together.<br>Join your study group now!</p>
+      <!-- Simple SVG illustration for books -->
+      <svg class="study-books" viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="70" width="60" height="30" rx="5" fill="#4a90e2"/>
+        <rect x="80" y="60" width="60" height="40" rx="5" fill="#6ee7b7"/>
+        <rect x="150" y="50" width="60" height="50" rx="5" fill="#fbbf24"/>
+        <rect x="20" y="80" width="40" height="10" rx="2" fill="#fff" opacity="0.5"/>
+        <rect x="90" y="70" width="40" height="10" rx="2" fill="#fff" opacity="0.5"/>
+        <rect x="160" y="60" width="40" height="10" rx="2" fill="#fff" opacity="0.5"/>
+      </svg>
+      <div style="font-size:1.1em;opacity:0.8;">
+        <i class="fa-solid fa-users"></i> Group Study &nbsp; 
+        <i class="fa-solid fa-list-check"></i> To-Do &nbsp; 
+        <i class="fa-solid fa-comments"></i> Chat
+      </div>
+    </div>
+    <div class="auth-form">
+      <h2 id="form-title"><i class="fa-solid fa-right-to-bracket"></i> Login</h2>
+      <div class="error" id="error-msg"></div>
+      <form id="login-form" autocomplete="off" onsubmit="return handleLogin(event)">
+        <div class="input-group">
+          <input type="text" id="login-username" placeholder="Username" required>
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="input-group">
+          <input type="email" id="login-email" placeholder="Email" required>
+          <i class="fa-solid fa-envelope"></i>
+        </div>
+        <div class="input-group">
+          <input type="password" id="login-password" placeholder="Password" required>
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <button type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</button>
+      </form>
+      <form id="register-form" style="display:none;" autocomplete="off" onsubmit="return handleRegister(event)">
+        <div class="input-group">
+          <input type="email" id="register-email" placeholder="Email" required>
+          <i class="fa-solid fa-envelope"></i>
+        </div>
+        <div class="input-group">
+          <input type="text" id="register-username" placeholder="Username" required>
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="input-group">
+          <input type="password" id="register-password" placeholder="Password" required>
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <button type="submit"><i class="fa-solid fa-user-plus"></i> Register</button>
+      </form>
+      <div class="switch-link" id="switch-link" onclick="toggleForm()">Don't have an account? Register</div>
+    </div>
+  </div>
+  <div class="user-area">
+    <div class="user-avatar" id="nav-avatar"></div>
+    <span id="nav-username"></span>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </div>
+  <script>
+    let isLogin = true;
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById('login-form').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('register-form').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('form-title').innerHTML = isLogin
+        ? '<i class="fa-solid fa-right-to-bracket"></i> Login'
+        : '<i class="fa-solid fa-user-plus"></i> Register';
+      document.getElementById('switch-link').innerText = isLogin
+        ? "Don't have an account? Register"
+        : "Already have an account? Login";
+      document.getElementById('error-msg').innerText = '';
+    }
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      if (email && password) {
+        window.location.href = "dashboard.html";
+      } else {
+        document.getElementById('error-msg').innerText = "Please enter your email and password.";
+      }
+      return false;
+    }
+    function handleRegister(e) {
+      e.preventDefault();
+      const email = document.getElementById('register-email').value;
+      const username = document.getElementById('register-username').value;
+      const password = document.getElementById('register-password').value;
+      if (email && username && password) {
+        window.location.href = "dashboard.html";
+      } else {
+        document.getElementById('error-msg').innerText = "Please fill in all fields.";
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

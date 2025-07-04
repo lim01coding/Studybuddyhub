@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Groups - Study Buddy Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f7f9fd 0%, #e8edfa 100%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      color: #222;
+    }
+    .topnav {
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2em 3em 1.2em 2em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 2em;
+      font-weight: 700;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      letter-spacing: 1px;
+    }
+    .logo i {
+      font-size: 1.2em;
+    }
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+    }
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+    .logout-btn {
+      background: #fff;
+      color: #222;
+      border: 1.5px solid #e0e7ff;
+      border-radius: 7px;
+      padding: 0.5em 1.3em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+    }
+    .logout-btn:hover {
+      background: #7b2ff2;
+      color: #fff;
+      border-color: #7b2ff2;
+    }
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 3em;
+      background: #f4f7fe;
+      border-radius: 16px;
+      padding: 0.7em 0;
+      margin: 2em auto 2.5em auto;
+      max-width: 1100px;
+      box-shadow: 0 2px 12px #e0e7ff22;
+    }
+    .nav-tab {
+      text-decoration: none;
+      font-size: 1.25em;
+      font-weight: 700;
+      color: #7b809a;
+      padding: 0.5em 2.5em;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+      background: none;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .nav-tab.active, .nav-tab:focus, .nav-tab:hover {
+      background: #fff;
+      color: #7b2ff2;
+      box-shadow: 0 2px 8px #e0e7ff33;
+    }
+    .groups-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1em;
+    }
+    .groups-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2em;
+      margin-bottom: 1.5em;
+    }
+    .groups-header-title {
+      font-size: 2em;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 0.2em;
+    }
+    .groups-header-subtitle {
+      color: #7b809a;
+      font-size: 1.15em;
+      margin-top: 0.3em;
+    }
+    .create-group-btn {
+      background: #7b2ff2;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8em 2em;
+      font-size: 1.1em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #e0e7ff33;
+    }
+    .create-group-btn i {
+      font-size: 1.1em;
+    }
+    .create-group-btn:hover {
+      background: #111c2b;
+    }
+    .groups-list-title {
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-bottom: 1em;
+      margin-left: 0.2em;
+      color: #222;
+    }
+    .groups-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2em;
+    }
+    .group-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #e0e7ff22;
+      border: 1px solid #e0e7ff;
+      padding: 1.5em 1.5em 1.2em 1.5em;
+      min-width: 270px;
+      max-width: 320px;
+      flex: 1 1 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: box-shadow 0.2s;
+    }
+    .group-card:hover {
+      box-shadow: 0 4px 24px #7b2ff233;
+    }
+    .group-card-title {
+      font-size: 1.18em;
+      font-weight: 700;
+      margin-bottom: 0.5em;
+      color: #222;
+    }
+    .group-card-category {
+      display: inline-block;
+      background: #f4f7fe;
+      color: #7b2ff2;
+      font-size: 0.98em;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.2em 1em;
+      margin-bottom: 0.7em;
+    }
+    .group-card-desc {
+      color: #7b809a;
+      font-size: 1em;
+      margin-bottom: 1.2em;
+    }
+    .group-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+    .group-card-members {
+      color: #7b809a;
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+    }
+    .group-card-members i {
+      color: #7b2ff2;
+    }
+    .join-btn, .leave-btn {
+      background: #7b2ff2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5em 1.5em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .join-btn:hover {
+      background: #111c2b;
+    }
+    .leave-btn {
+      background: #e74c3c;
+    }
+    .leave-btn:hover {
+      background: #c0392b;
+    }
+    .group-card .owner-badge {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      background: #1db954;
+      color: #fff;
+      font-size: 0.9em;
+      font-weight: 600;
+      border-radius: 7px;
+      padding: 0.2em 0.8em;
+      letter-spacing: 0.5px;
+    }
+    .group-card .joined-badge {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      background: #7b2ff2;
+      color: #fff;
+      font-size: 0.9em;
+      font-weight: 600;
+      border-radius: 7px;
+      padding: 0.2em 0.8em;
+      letter-spacing: 0.5px;
+    }
+    /* Modal */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.18);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 32px #7b2ff244;
+      padding: 2em 2.5em;
+      min-width: 320px;
+      max-width: 95vw;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+      position: relative;
+    }
+    .modal-title {
+      font-size: 1.3em;
+      font-weight: 700;
+      margin-bottom: 0.2em;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      background: none;
+      border: none;
+      font-size: 1.3em;
+      color: #aaa;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover {
+      color: #e74c3c;
+    }
+    .modal input, .modal textarea, .modal select {
+      width: 100%;
+      font-size: 1.05em;
+      padding: 0.7em 1em;
+      border-radius: 8px;
+      border: 1.5px solid #e0e7ff;
+      background: #f7fafd;
+      margin-bottom: 0.2em;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1em;
+      margin-top: 1em;
+    }
+    .modal .create-btn {
+      background: #7b2ff2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 2em;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal .create-btn:hover {
+      background: #111c2b;
+    }
+    .modal .cancel-btn {
+      background: #fff;
+      color: #222;
+      border: 1.5px solid #e0e7ff;
+      border-radius: 8px;
+      padding: 0.7em 2em;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .modal .cancel-btn:hover {
+      background: #f7fafd;
+      color: #7b2ff2;
+    }
+    /* Add chat styles */
+    .group-chat-container {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #e0e7ff22;
+      border: 1px solid #e0e7ff;
+      margin-top: 2em;
+      padding: 1.5em;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .chat-header {
+      font-size: 1.2em;
+      font-weight: 700;
+      margin-bottom: 1em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    .chat-messages {
+      min-height: 120px;
+      max-height: 260px;
+      overflow-y: auto;
+      margin-bottom: 1em;
+      padding-right: 0.5em;
+    }
+    .chat-message {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8em;
+      margin-bottom: 1em;
+    }
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #7b2ff2;
+      overflow: hidden;
+    }
+    .chat-content {
+      background: #f7fafd;
+      border-radius: 10px;
+      padding: 0.7em 1em;
+      font-size: 1em;
+      color: #222;
+      max-width: 420px;
+      word-break: break-word;
+    }
+    .chat-meta {
+      font-size: 0.9em;
+      color: #7b809a;
+      margin-bottom: 0.2em;
+      font-weight: 600;
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 0.7em;
+      margin-top: 1em;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 0.7em 1em;
+      border-radius: 8px;
+      border: 1.5px solid #e0e7ff;
+      font-size: 1em;
+      background: #f7fafd;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .chat-input:focus {
+      border: 1.5px solid #7b2ff2;
+      background: #fff;
+    }
+    .chat-send-btn {
+      background: #7b2ff2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chat-send-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .invite-section {
+      margin-top: 2em;
+      background: #f7fafd;
+      border-radius: 10px;
+      padding: 1em 1.5em;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 2em;
+      border: 1px solid #e0e7ff;
+    }
+    .invite-title {
+      font-weight: 600;
+      margin-bottom: 0.5em;
+    }
+    .invite-row {
+      display: flex;
+      gap: 0.7em;
+      margin-bottom: 0.7em;
+    }
+    .invite-input {
+      flex: 1;
+      padding: 0.6em 1em;
+      border-radius: 8px;
+      border: 1.5px solid #e0e7ff;
+      font-size: 1em;
+      background: #fff;
+      outline: none;
+    }
+    .invite-btn {
+      background: #1db954;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6em 1.5em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .invite-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .invite-list {
+      margin-top: 0.5em;
+      font-size: 0.98em;
+      color: #7b809a;
+    }
+    .invite-list span {
+      background: #e0e7ff;
+      color: #7b2ff2;
+      border-radius: 7px;
+      padding: 0.2em 0.7em;
+      margin-right: 0.5em;
+      display: inline-block;
+      margin-bottom: 0.3em;
+    }
+    /* Add to your <style> section for member list styling */
+    .group-members-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      align-items: center;
+      margin-bottom: 1em;
+      background: #f7fafd;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+    }
+    .group-member {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1em;
+      background: #fff;
+      border-radius: 6px;
+      padding: 0.2em 0.7em 0.2em 0.2em;
+      box-shadow: 0 1px 4px #e0e7ff22;
+    }
+    .group-member img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e0e7ff;
+    }
+    .group-member.owner {
+      font-weight: bold;
+      color: #1db954;
+    }
+    @media (max-width: 900px) {
+      .groups-header { flex-direction: column; align-items: flex-start; gap: 1em; }
+      .groups-list { gap: 1em; }
+      .group-card { min-width: 220px; max-width: 100%; }
+    }
+    @media (max-width: 600px) {
+      .topnav { flex-direction: column; align-items: flex-start; gap: 0.7em; padding: 0.7em 1em; }
+      .groups-header { margin-top: 1em; }
+      .groups-list { flex-direction: column; gap: 1em; }
+      .group-card { min-width: 0; }
+      .groups-header-title { font-size: 1.3em; }
+    }
+  </style>
+  <!-- Add this at the top of <head> in every page -->
+  <script>
+    // Apply dark mode before page renders
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+      document.body && document.body.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.body && document.body.classList.remove("dark");
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900 min-h-screen py-8 px-2 transition">
+  <nav class="topnav">
+    <div class="logo"><i class="fa-solid fa-book"></i> <span style="color:#7b2ff2">Study Buddy Hub</span></div>
+    <div class="user-area">
+      <div class="user-avatar" id="nav-avatar"></div>
+      <span id="nav-username"></span>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  </nav>
+  <div class="nav-tabs">
+    <a href="dashboard.html" class="nav-tab">Dashboard</a>
+    <a href="planner.html" class="nav-tab">Study Planner</a>
+    <a href="group.html" class="nav-tab active">Study Groups</a>
+    <a href="notes.html" class="nav-tab">Notes</a>
+    <a href="discussions.html" class="nav-tab">Discussions</a>
+    <a href="profile.html" class="nav-tab">Profile</a>
+  </div>
+  <div class="groups-container">
+    <div class="groups-header">
+      <div>
+        <div class="groups-header-title">Study Groups</div>
+        <div class="groups-header-subtitle">Join existing groups or create your own</div>
+      </div>
+      <button class="create-group-btn" id="createGroupBtn"><i class="fa-solid fa-plus"></i> Create Group</button>
+    </div>
+    <div class="groups-list-title">Available Groups</div>
+    <div class="groups-list" id="groupsList"></div>
+  </div>
+  <!-- Modal for creating group -->
+  <div class="modal-bg" id="modalBg">
+    <form class="modal" id="createGroupForm" autocomplete="off">
+      <button type="button" class="modal-close" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-title">Create New Group</div>
+      <input type="text" id="newGroupName" placeholder="Group name" required>
+      <select id="newGroupCategory" required>
+        <option value="">Select category</option>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Physics">Physics</option>
+        <option value="Chemistry">Chemistry</option>
+        <option value="Biology">Biology</option>
+        <option value="Other">Other</option>
+      </select>
+      <textarea id="newGroupDesc" placeholder="Short description" rows="2" required></textarea>
+      <div class="modal-actions">
+        <button type="submit" class="create-btn">Create</button>
+        <button type="button" class="cancel-btn" id="cancelModalBtn">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <div class="group-chat-container" id="groupChatContainer" style="display:none;">
+    <div class="chat-header">
+      <i class="fa-solid fa-comments"></i>
+      <span id="chatGroupName">Group Chat</span>
+    </div>
+    <div class="group-members-list" id="groupMembersList" style="margin-bottom:1em; display:none;">
+      <!-- Members will be rendered here -->
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <form class="chat-input-row" id="chatForm">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." autocomplete="off" required>
+      <button type="submit" class="chat-send-btn" id="chatSendBtn">Send</button>
+    </form>
+  </div>
+  <div class="invite-section" id="inviteSection" style="display:none;">
+    <div class="invite-title">Invite Friends to Group</div>
+    <form class="invite-row" id="inviteForm">
+      <input type="text" class="invite-input" id="inviteInput" placeholder="Enter friend's name or email" required>
+      <button type="submit" class="invite-btn">Invite</button>
+    </form>
+    <div class="invite-list" id="inviteList"></div>
+  </div>
+  <script>
+    // Demo user
+    const currentUser = "Venglim";
+    // Demo initial groups
+    const defaultGroups = [
+      {
+        name: "Calculus Study Group",
+        category: "Mathematics",
+        desc: "Advanced calculus problem solving",
+        members: 12,
+        joined: false,
+        owner: false
+      },
+      {
+        name: "Data Structures & Algorithms",
+        category: "Computer Science",
+        desc: "Weekly coding practice sessions",
+        members: 8,
+        joined: false,
+        owner: false
+      },
+      {
+        name: "Organic Chemistry Lab",
+        category: "Chemistry",
+        desc: "Lab prep and reaction mechanisms",
+        members: 15,
+        joined: false,
+        owner: false
+      },
+      {
+        name: "Modern Physics Discussion",
+        category: "Physics",
+        desc: "Quantum mechanics and relativity",
+        members: 6,
+        joined: false,
+        owner: false
+      }
+    ];
+    // Load groups from localStorage or use default
+    function loadGroups() {
+      const data = localStorage.getItem('studyGroups');
+      return data ? JSON.parse(data) : defaultGroups;
+    }
+    function saveGroups(groups) {
+      localStorage.setItem('studyGroups', JSON.stringify(groups));
+    }
+    let groups = loadGroups();
+
+    function renderGroups() {
+      const list = document.getElementById('groupsList');
+      list.innerHTML = '';
+      if (groups.length === 0) {
+        list.innerHTML = '<div style="color:#aaa;font-size:1.1em;">No groups available. Create one!</div>';
+        return;
+      }
+      groups.forEach((g, idx) => {
+        // Get actual member count from groupData
+        const groupData = getGroupData(g.name);
+        const memberCount = groupData.members.length || 1; // fallback to 1 for legacy
+        // Show up to 3 avatars as preview
+        let memberAvatars = '';
+        if (groupData.members && groupData.members.length > 0) {
+          memberAvatars = groupData.members.slice(0, 3).map(m =>
+            `<img src="${m.avatar}" alt="${m.name}" title="${m.name}" style="width:22px;height:22px;border-radius:50%;margin-right:-7px;border:2px solid #fff;box-shadow:0 1px 2px #e0e7ff44;">`
+          ).join('');
+          if (groupData.members.length > 3) {
+            memberAvatars += `<span style="margin-left:4px;font-size:0.95em;color:#7b809a;">+${groupData.members.length - 3}</span>`;
+          }
+        }
+        list.innerHTML += `
+          <div class="group-card" data-idx="${idx}" style="cursor:${g.joined ? 'pointer' : 'default'};">
+            <div class="group-card-title">${g.name}</div>
+            <div class="group-card-category">${g.category}</div>
+            <div class="group-card-desc">${g.desc}</div>
+            <div class="group-card-footer">
+              <div class="group-card-members">
+                <span style="display:inline-flex;align-items:center;vertical-align:middle;">
+                  ${memberAvatars}
+                  <i class="fa-solid fa-users" style="margin-left:7px;"></i> ${memberCount} member${memberCount > 1 ? 's' : ''}
+                </span>
+              </div>
+              ${g.joined
+                ? `<button class="leave-btn" data-leave="${idx}">Leave</button>`
+                : `<button class="join-btn" data-join="${idx}">Join</button>`
+              }
+            </div>
+            ${g.owner ? `<div class="owner-badge">Owner</div>` : g.joined ? `<div class="joined-badge">Joined</div>` : ''}
+          </div>
+        `;
+      });
+
+      // Attach event listeners after rendering
+      document.querySelectorAll('.group-card').forEach(card => {
+        const idx = Number(card.getAttribute('data-idx'));
+        if (groups[idx].joined) {
+          card.onclick = function(e) {
+            if (e.target.closest('button')) return;
+            openGroupChat(idx);
+          };
+        }
+      });
+      document.querySelectorAll('[data-join]').forEach(btn => {
+        btn.onclick = function(e) {
+          e.stopPropagation();
+          joinGroup(Number(btn.getAttribute('data-join')));
+        };
+      });
+      document.querySelectorAll('[data-leave]').forEach(btn => {
+        btn.onclick = function(e) {
+          e.stopPropagation();
+          leaveGroup(Number(btn.getAttribute('data-leave')));
+        };
+      });
+    }
+    function joinGroup(idx) {
+      if (!groups[idx].joined) {
+        groups[idx].joined = true;
+        // Add current user to group members in chat data
+        const group = groups[idx];
+        const groupData = getGroupData(group.name);
+        if (!groupData.members.find(m => m.name === currentUser)) {
+          groupData.members.push({ name: currentUser, email: "venglim@school.edu", avatar: "https://randomuser.me/api/portraits/men/49.jpg" });
+          setGroupData(group.name, groupData);
+        }
+        // Sync member count
+        groups[idx].members = groupData.members.length;
+        saveGroups(groups);
+        renderGroups();
+        openGroupChat(idx);
+      }
+    }
+    function leaveGroup(idx) {
+      if (groups[idx].joined) {
+        if (groups[idx].owner) {
+          alert("You are the owner. You can't leave your own group.");
+          return;
+        }
+        groups[idx].joined = false;
+        // Remove from chat members
+        const group = groups[idx];
+        const groupData = getGroupData(group.name);
+        groupData.members = groupData.members.filter(m => m.name !== currentUser);
+        setGroupData(group.name, groupData);
+        // Sync member count
+        groups[idx].members = groupData.members.length;
+        saveGroups(groups);
+        renderGroups();
+        document.getElementById('groupChatContainer').style.display = 'none';
+        document.getElementById('inviteSection').style.display = 'none';
+      }
+    }
+    window.joinGroup = joinGroup;
+    window.leaveGroup = leaveGroup;
+
+    // Modal logic
+    const modalBg = document.getElementById('modalBg');
+    const createGroupBtn = document.getElementById('createGroupBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    const createGroupForm = document.getElementById('createGroupForm');
+    createGroupBtn.onclick = () => { modalBg.style.display = 'flex'; };
+    closeModalBtn.onclick = cancelModalBtn.onclick = () => {
+      modalBg.style.display = 'none';
+      createGroupForm.reset();
+    };
+    createGroupForm.onsubmit = function(e) {
+      e.preventDefault();
+      const name = document.getElementById('newGroupName').value.trim();
+      const category = document.getElementById('newGroupCategory').value;
+      const desc = document.getElementById('newGroupDesc').value.trim();
+      if (!name || !category || !desc) return;
+      groups.unshift({
+        name,
+        category,
+        desc,
+        members: 1,
+        joined: true,
+        owner: true
+      });
+      // Add creator to groupData
+      const groupData = getGroupData(name);
+      groupData.members = [{ name: currentUser, email: "venglim@school.edu", avatar: "https://randomuser.me/api/portraits/men/49.jpg" }];
+      setGroupData(name, groupData);
+      saveGroups(groups);
+      renderGroups();
+      modalBg.style.display = 'none';
+      createGroupForm.reset();
+    };
+
+    // --- Chat & Invite Feature ---
+    // Store group chat and members in localStorage
+    function getGroupData(groupName) {
+      const data = JSON.parse(localStorage.getItem('groupData') || '{}');
+      // Always return a copy to avoid reference bugs
+      return data[groupName]
+        ? JSON.parse(JSON.stringify(data[groupName]))
+        : { members: [], chat: [], invites: [] };
+    }
+    function setGroupData(groupName, groupData) {
+      const data = JSON.parse(localStorage.getItem('groupData') || '{}');
+      data[groupName] = groupData;
+      localStorage.setItem('groupData', JSON.stringify(data));
+    }
+
+    // Show chat and invite UI for a group
+    function openGroupChat(idx) {
+      const group = groups[idx];
+      document.getElementById('chatGroupName').textContent = group.name + " Chat";
+      document.getElementById('groupChatContainer').style.display = '';
+      document.getElementById('inviteSection').style.display = '';
+      renderGroupMembers(group.name);
+      renderChat(group.name);
+      renderInvites(group.name);
+      window.currentGroupIdx = idx;
+    }
+
+    // Render chat messages
+    function renderChat(groupName) {
+      const chatBox = document.getElementById('chatMessages');
+      const groupData = getGroupData(groupName);
+      renderGroupMembers(groupName);
+      chatBox.innerHTML = '';
+      if (groupData.members.length === 0) {
+        chatBox.innerHTML = `<div style="color:#aaa;text-align:center;margin-top:2em;">No one has joined yet. You can send invites to your friends to join the group.</div>`;
+        document.getElementById('chatInput').disabled = true;
+        document.getElementById('chatSendBtn').disabled = true;
+        return;
+      }
+      // Only group creator can post if alone
+      const isCreator = groupData.members[0] && groupData.members[0].name === currentUser;
+      if (groupData.members.length === 1 && isCreator) {
+        document.getElementById('chatInput').disabled = false;
+        document.getElementById('chatSendBtn').disabled = false;
+        chatBox.innerHTML += `<div style="color:#aaa;text-align:center;margin-bottom:1em;">Invite friends to start a discussion. Only you can post until others join.</div>`;
+      } else {
+        document.getElementById('chatInput').disabled = false;
+        document.getElementById('chatSendBtn').disabled = false;
+      }
+      groupData.chat.forEach(msg => {
+        chatBox.innerHTML += `
+          <div class="chat-message">
+            <div class="chat-avatar"><img src="${msg.avatar}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
+            <div>
+              <div class="chat-meta">${msg.name}</div>
+              <div class="chat-content">${msg.text}</div>
+            </div>
+          </div>
+        `;
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Add this function to render the group members list
+    function renderGroupMembers(groupName) {
+      const groupData = getGroupData(groupName);
+      const membersDiv = document.getElementById('groupMembersList');
+      if (!groupData.members.length) {
+        membersDiv.style.display = 'none';
+        return;
+      }
+      membersDiv.style.display = '';
+      membersDiv.innerHTML = groupData.members.map(m =>
+        `<span class="group-member${m.name === currentUser ? ' owner' : ''}">
+          <img src="${m.avatar}" alt="${m.name}"> ${m.name}${m.name === currentUser ? ' (You)' : ''}
+        </span>`
+      ).join('');
+    }
+
+    // Update chat send logic to enforce "only creator can post if alone"
+    document.getElementById('chatForm').onsubmit = function(e) {
+      e.preventDefault();
+      const idx = window.currentGroupIdx;
+      const group = groups[idx];
+      const groupData = getGroupData(group.name);
+      if (groupData.members.length === 0) return;
+      // Only creator can post if alone
+      if (groupData.members.length === 1 && groupData.members[0].name !== currentUser) {
+        alert("Only the group creator can post until others join.");
+        return;
+      }
+      const text = document.getElementById('chatInput').value.trim();
+      if (!text) return;
+      groupData.chat.push({
+        name: currentUser,
+        avatar: "https://randomuser.me/api/portraits/men/49.jpg",
+        text
+      });
+      setGroupData(group.name, groupData);
+      renderChat(group.name);
+      document.getElementById('chatInput').value = '';
+
+      // --- Improved: Contextual fake student and professor responses ---
+      function getRelevantResponse(question, responses) {
+        const q = question.toLowerCase();
+        if (q.includes("derivative") || q.includes("differentiate"))
+          return "To find the derivative, apply the power rule or chain rule as needed.";
+        if (q.includes("integral") || q.includes("integration"))
+          return "For integration, try substitution or integration by parts if it's complex.";
+        if (q.includes("algorithm") || q.includes("sort"))
+          return "For sorting algorithms, quicksort is efficient on average, but mergesort is stable.";
+        if (q.includes("physics") || q.includes("quantum"))
+          return "Quantum mechanics can be tricky—focus on understanding the Schrödinger equation basics.";
+        if (q.includes("chemistry") || q.includes("reaction"))
+          return "In organic chemistry, reaction mechanisms often involve electron movement (arrows).";
+        if (q.includes("limit"))
+          return "To solve a limit, try direct substitution first, then factor or use L'Hôpital's Rule if needed.";
+        if (q.includes("matrix") || q.includes("determinant"))
+          return "To find a determinant, use cofactor expansion or row reduction for larger matrices.";
+        // fallback to a random response
+        return responses[Math.floor(Math.random() * responses.length)];
+      }
+
+      // Only reply if more than one member (simulate real group)
+      if (groupData.members.length > 1) {
+        const groupFakeMembers = groupData.members.filter(m =>
+          fakeStudents.some(f => f.name === m.name)
+        );
+        let responders = groupFakeMembers.length > 0
+          ? fakeStudents.filter(f => groupFakeMembers.some(m => m.name === f.name))
+          : fakeStudents;
+
+        responders = responders.sort(() => Math.random() - 0.5).slice(0, 2);
+
+        responders.forEach((student, i) => {
+          setTimeout(() => {
+            const reply = getRelevantResponse(text, student.responses);
+            const msg = {
+              name: student.name,
+              avatar: student.avatar,
+              text: reply
+            };
+            const updatedData = getGroupData(group.name);
+            if (updatedData.members.length > 0) {
+              updatedData.chat.push(msg);
+              setGroupData(group.name, updatedData);
+              renderChat(group.name);
+            }
+          }, 2500 + i * 1200 + Math.random() * 800);
+        });
+
+        // Professor may answer (randomly, 40% chance)
+        if (Math.random() < 0.4) {
+          setTimeout(() => {
+            const reply = getRelevantResponse(text, professor.responses);
+            const msg = {
+              name: professor.name,
+              avatar: professor.avatar,
+              text: reply
+            };
+            const updatedData = getGroupData(group.name);
+            if (updatedData.members.length > 0) {
+              updatedData.chat.push(msg);
+              setGroupData(group.name, updatedData);
+              renderChat(group.name);
+            }
+          }, 5000 + Math.random() * 1000);
+        }
+
+        // Always fallback to AI if no fake students or professor reply
+        setTimeout(() => {
+          const updatedData = getGroupData(group.name);
+          const lastMsg = updatedData.chat[updatedData.chat.length - 1];
+          if (lastMsg && lastMsg.name !== aiStudent.name &&
+              !fakeStudents.some(f => f.name === lastMsg.name) &&
+              lastMsg.name !== professor.name) {
+            const aiReplies = [
+              getRelevantResponse(text, [
+                "That's a great question! I think the answer is...",
+                "Let me check my notes and get back to you.",
+                "Here's a resource that helped me: https://khanacademy.org"
+              ])
+            ];
+            const reply = aiReplies[Math.floor(Math.random() * aiReplies.length)];
+            updatedData.chat.push({
+              name: aiStudent.name,
+              avatar: aiStudent.avatar,
+              text: reply
+            });
+            setGroupData(group.name, updatedData);
+            renderChat(group.name);
+          }
+        }, 7000 + Math.random() * 1000);
+      }
+    };
+
+    // Invite logic
+    document.getElementById('inviteForm').onsubmit = function(e) {
+      e.preventDefault();
+      const idx = window.currentGroupIdx;
+      const group = groups[idx];
+      const groupData = getGroupData(group.name);
+      const input = document.getElementById('inviteInput').value.trim();
+      if (!input) return;
+      // Find student by name or email
+      const student = allStudents.find(s => s.name.toLowerCase() === input.toLowerCase() || s.email.toLowerCase() === input.toLowerCase());
+      if (!student) {
+        alert("Student not found.");
+        return;
+      }
+      if (groupData.members.find(m => m.email === student.email)) {
+        alert("Student already in group.");
+        return;
+      }
+      if (groupData.invites.find(i => i.email === student.email)) {
+        alert("Invite already sent.");
+        return;
+      }
+      groupData.invites.push(student);
+      setGroupData(group.name, groupData);
+      renderInvites(group.name);
+      document.getElementById('inviteInput').value = '';
+      // Simulate invite acceptance after 2s
+      setTimeout(() => {
+        const updatedData = getGroupData(group.name);
+        updatedData.invites = updatedData.invites.filter(i => i.email !== student.email);
+        updatedData.members.push(student);
+        setGroupData(group.name, updatedData);
+        renderInvites(group.name);
+        renderChat(group.name);
+      }, 2000);
+    };
+
+    function renderInvites(groupName) {
+      const groupData = getGroupData(groupName);
+      const inviteList = document.getElementById('inviteList');
+      if (!groupData.invites.length) {
+        inviteList.innerHTML = '';
+        return;
+      }
+      inviteList.innerHTML = "Pending invites: ";
+      groupData.invites.forEach(i => {
+        inviteList.innerHTML += `<span>${i.name}</span>`;
+      });
+    }
+
+    function renderMembers(groupName) {
+      const groupData = getGroupData(groupName);
+      const membersList = document.getElementById('groupMembersList');
+      membersList.innerHTML = '';
+      if (groupData.members.length === 0) {
+        membersList.style.display = 'none';
+        return;
+      }
+      membersList.style.display = 'block';
+      groupData.members.forEach(member => {
+        membersList.innerHTML += `
+          <div class="chat-message" style="align-items:center;">
+            <div class="chat-avatar" style="width:30px; height:30px; font-size:0.9em;">${member.avatar ? `<img src="${member.avatar}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : ''}</div>
+            <div style="margin-left:0.5em; font-size:0.95em; color:#222;">${member.name}</div>
+          </div>
+        `;
+      });
+    }
+
+    // Add a toggle to switch between all groups and joined groups
+    function showJoinedGroups() {
+      groups = loadGroups();
+      const joined = groups.filter(g => g.joined);
+      const list = document.getElementById('groupsList');
+      if (joined.length === 0) {
+        list.innerHTML = '<div style="color:#aaa;font-size:1.1em;">You have not joined any groups yet.</div>';
+        return;
+      }
+      list.innerHTML = '';
+      joined.forEach((g, idx) => {
+        const realIdx = groups.findIndex(gr => gr.name === g.name);
+        const groupData = getGroupData(g.name);
+        const memberCount = groupData.members.length || 1;
+        let memberAvatars = '';
+        if (groupData.members && groupData.members.length > 0) {
+          memberAvatars = groupData.members.slice(0, 3).map(m =>
+            `<img src="${m.avatar}" alt="${m.name}" title="${m.name}" style="width:22px;height:22px;border-radius:50%;margin-right:-7px;border:2px solid #fff;box-shadow:0 1px 2px #e0e7ff44;">`
+          ).join('');
+          if (groupData.members.length > 3) {
+            memberAvatars += `<span style="margin-left:4px;font-size:0.95em;color:#7b809a;">+${groupData.members.length - 3}</span>`;
+          }
+        }
+        list.innerHTML += `
+          <div class="group-card" data-idx="${realIdx}" style="cursor:pointer;">
+            <div class="group-card-title">${g.name}</div>
+            <div class="group-card-category">${g.category}</div>
+            <div class="group-card-desc">${g.desc}</div>
+            <div class="group-card-footer">
+              <div class="group-card-members">
+                <span style="display:inline-flex;align-items:center;vertical-align:middle;">
+                  ${memberAvatars}
+                  <i class="fa-solid fa-users" style="margin-left:7px;"></i> ${memberCount} member${memberCount > 1 ? 's' : ''}
+                </span>
+              </div>
+              ${g.owner
+                ? `<span class="owner-badge">Owner</span>`
+                : `<button class="leave-btn" data-leave="${realIdx}">Leave</button>`
+              }
+            </div>
+            ${g.owner ? `<div class="owner-badge">Owner</div>` : `<div class="joined-badge">Joined</div>`}
+          </div>
+        `;
+      });
+      // Attach event listeners after rendering
+      document.querySelectorAll('.group-card').forEach(card => {
+        const idx = Number(card.getAttribute('data-idx'));
+        card.onclick = function(e) {
+          if (e.target.closest('button')) return;
+          openGroupChat(idx);
+        };
+      });
+      document.querySelectorAll('[data-leave]').forEach(btn => {
+        btn.onclick = function(e) {
+          e.stopPropagation();
+          leaveGroup(Number(btn.getAttribute('data-leave')));
+        };
+      });
+    }
+
+    // Add filter button if not already present
+    if (!document.getElementById('filterGroupsBtn')) {
+      const groupsHeader = document.querySelector('.groups-header');
+      const filterBtn = document.createElement('button');
+      filterBtn.textContent = "Show Joined Groups";
+      filterBtn.style.marginLeft = "1em";
+      filterBtn.className = "create-group-btn";
+      filterBtn.id = "filterGroupsBtn";
+      let showingJoined = false;
+      filterBtn.onclick = function() {
+        showingJoined = !showingJoined;
+        filterBtn.textContent = showingJoined ? "Show All Groups" : "Show Joined Groups";
+        if (showingJoined) showJoinedGroups();
+        else renderGroups();
+      };
+      groupsHeader.appendChild(filterBtn);
+    }
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+
+    // Show username in nav on load
+    document.getElementById("nav-username").textContent = localStorage.getItem("userName") || "User";
+
+    // Sync username and avatar from localStorage
+    function updateNavProfile() {
+      const userName = localStorage.getItem("userName") || "User";
+      const userPhoto = localStorage.getItem("profilePhoto");
+      const navUsername = document.getElementById("nav-username");
+      const navAvatar = document.getElementById("nav-avatar");
+      navUsername.textContent = userName;
+      if (userPhoto) {
+        navAvatar.innerHTML = `<img src="${userPhoto}" alt="${userName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        navAvatar.textContent = userName.charAt(0).toUpperCase();
+        navAvatar.style.background = "#4a90e2";
+        navAvatar.style.color = "#fff";
+        navAvatar.style.display = "flex";
+        navAvatar.style.alignItems = "center";
+        navAvatar.style.justifyContent = "center";
+        navAvatar.style.fontWeight = "bold";
+        navAvatar.style.fontSize = "1.2em";
+      }
+    }
+    updateNavProfile();
+
+    // Demo users (for inviting)
+    const allStudents = [
+      { name: "Alice", email: "alice@school.edu", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
+      { name: "Bob", email: "bob@school.edu", avatar: "https://randomuser.me/api/portraits/men/45.jpg" },
+      { name: "Carol", email: "carol@school.edu", avatar: "https://randomuser.me/api/portraits/women/46.jpg" },
+      { name: "Prof. Newton", email: "newton@school.edu", avatar: "https://randomuser.me/api/portraits/men/47.jpg", professor: true }
+    ];
+    // Demo AI/fake students with more realistic responses
+    const fakeStudents = [
+      {
+        name: "Alice",
+        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+        responses: [
+          "For that problem, I usually start by breaking it into smaller parts.",
+          "I think the answer is related to the chain rule. Want me to explain?",
+          "I found a good YouTube video on this topic, want the link?"
+        ]
+      },
+      {
+        name: "Bob",
+        avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+        responses: [
+          "I had the same question last week! The professor said to focus on the main formula.",
+          "Try looking at example 3 in the textbook, it helped me.",
+          "If you want, I can share my notes."
+        ]
+      },
+      {
+        name: "Carol",
+        avatar: "https://randomuser.me/api/portraits/women/46.jpg",
+        responses: [
+          "I think you need to use substitution here.",
+          "Let me check my notes and get back to you.",
+          "I can explain it step by step if you want!"
+        ]
+      }
+    ];
+    // Professor responses
+    const professor = {
+      name: "Prof. Newton",
+      avatar: "https://randomuser.me/api/portraits/men/47.jpg",
+      responses: [
+        "Great question! Remember to always check your units.",
+        "If you have trouble, please review the lecture slides from last week.",
+        "Feel free to ask for a 1-on-1 session if you need more help."
+      ]
+    };
+
+    // AI/fake student fallback
+    const aiStudent = { name: "Sam (AI)", avatar: "https://randomuser.me/api/portraits/men/48.jpg" };
+
+    // Make sure joinGroup and leaveGroup are global
+    window.joinGroup = joinGroup;
+    window.leaveGroup = leaveGroup;
+    window.openGroupChat = openGroupChat;
+
+    renderGroups();
+  </script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Study Buddy Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: #f7f9fd;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      color: #222;
+    } color: #222;
+    .topnav {
+      width: 100%;
+      background: #fff;;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      display: flex;16px 0 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em;
+      position: sticky;px;
+      top: 0;
+      z-index: 10;
+    } font-size: 2.5rem;
+    .logo {weight: 700;
+      font-size: 1.7em;x;
+      font-weight: 700;.5px;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      gap: 0.6em;1.15rem;
+      letter-spacing: 1px;
+    }
+    .logo i {ar {
+      font-size: 1.1em;
+    } justify-content: center;
+    .user-area {tom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 1em;0%;
+    } max-width: 420px;
+    .user-avatar {x 18px;
+      width: 38px;x solid #e3e7f7;
+      height: 38px;: 10px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: #7b2ff2;
+      display: flex;rder 0.2s;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;id #6a5af9;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    } display: flex;
+    .logout-btn {tent: center;
+      background: #fff;
+      color: #7b2ff2;32px;
+      border: 1.5px solid #7b2ff2;
+      border-radius: 7px;
+      padding: 0.4em 1.2em;
+      font-size: 1em;8px;
+      font-weight: 600;x;
+      cursor: pointer;lid #e3e7f7;
+      transition: background 0.2s, color 0.2s;
+    } font-size: 1rem;
+    .logout-btn:hover {
+      background: #7b2ff2;
+      color: #fff;border 0.2s;
+    }
+    .nav-tabs {lect:focus {
+      display: flex;solid #6a5af9;
+      justify-content: center;
+      gap: 3em; {
+      background: #f7f9fd;
+      border-radius: 16px;s: repeat(auto-fit, minmax(290px, 1fr));
+      padding: 0.7em 0;
+      margin: 2em auto 2.5em auto;
+      max-width: 1100px;
+    }note-card {
+    .nav-tab {nd: #fff;
+      text-decoration: none;
+      font-size: 1.3em; 12px rgba(80, 112, 255, 0.07);
+      font-weight: 700;x 18px 20px;
+      color: #7b809a;
+      padding: 0.4em 2em;umn;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+      background: none;hadow 0.18s, border 0.18s, transform 0.18s;
+      outline: none;r;
+      border: none;
+      cursor: pointer;
+      display: inline-block; rgba(106,90,249,0.13);
+    } border: 1.5px solid #6a5af9;
+    .nav-tab.active, .nav-tab:focus, .nav-tab:hover {
+      background: #fff;
+      color: #7b2ff2;
+      box-shadow: 0 2px 8px #e0e7ff33;
+    } font-weight: 600;
+    @media (max-width: 900px) {
+      .nav-tabs { gap: 1.2em; max-width: 98vw; }
+      .nav-tab { font-size: 1.1em; padding: 0.4em 1em; }
+    }note-author {
+    @media (max-width: 600px) {
+      .topnav { flex-direction: column; align-items: flex-start; gap: 0.7em; padding: 0.7em 1em; }
+      .nav-tabs { gap: 0.5em; padding: 0.3em 0.2em; margin: 1em auto 1em auto; }
+      .nav-tab { font-size: 1em; padding: 0.3em 0.7em; }
+    }note-tags {
+    .dashboard-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2em 1em 1em 1em;
+    }
+    .dashboard-cards {
+      display: flex;0f4ff;
+      flex-wrap: wrap;
+      gap: 2em;dius: 8px;
+      justify-content: flex-start;
+      align-items: stretch;
+      margin-bottom: 2em;
+    } letter-spacing: 0.1px;
+    .dashboard-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      padding: 1.5em 2em;;
+      min-width: 220px;
+      max-width: 320px;
+      flex: 1 1 220px;;
+      display: flex; ellipsis;
+      flex-direction: column;
+      gap: 0.5em;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;3eb;
+      border: 1px solid #e0e7ff;
+    } border: none;
+    .dashboard-card:hover {
+      box-shadow: 0 8px 32px #7b2ff233;
+      transform: translateY(-4px) scale(1.03);
+    } font-weight: 500;
+    .dashboard-card .card-title {
+      font-size: 1.08em;tart;
+      font-weight: 600;
+      color: #222;background 0.18s;
+      margin-bottom: 0.2em; rgba(66,99,235,0.08);
+      display: flex;
+      align-items: center;
+      gap: 0.5em; #6a5af9;
+    }
+    .dashboard-card .card-value {
+      font-size: 2em;
+      font-weight: 700;m;
+      color: #7b2ff2; 0;
+      margin-bottom: 0.1em;
+    }rate-row {
+    .dashboard-card .card-desc {
+      font-size: 1em;rem;
+      color: #7b809a;
+      margin-bottom: 0.2em;
+    }rate-row button {
+    .dashboard-card .card-icon {
+      font-size: 1.3em;
+      color: #7b2ff2;
+      margin-left: auto;
+      opacity: 0.7;er;
+    } margin: 0 2px;
+    .dashboard-card .card-value.complete {
+      color: #1db954;
+      font-size: 1.5em;ver {
+    } color: #f7b731;
+    .welcome-card {
+      background: #fff;700px) {
+      border-radius: 14px;: 24px 2vw 0 2vw; }
+      box-shadow: 0 2px 12px #e0e7ff33;
+      padding: 2em 2.5em;g: 16px 10px 14px 10px; }
+      margin-bottom: 2em;
+      border: 1px solid #e0e7ff;
+    }d>
+    .welcome-card h2 {
+      margin: 0 0 0.2em 0;
+      font-size: 2em;r">
+      font-weight: 700;h1>
+      color: #222;tes shared by other students on different topics</p>
+    }/div>
+    .welcome-card .subtitle {
+      color: #7b809a;xt" id="searchInput" placeholder="Search notes">
+      font-size: 1.1em;
+      margin-bottom: 1em;
+    } <select id="subjectFilter">
+    .welcome-card .desc {Subject</option>
+      font-size: 1.1em;Math">Math</option>
+      margin-bottom: 1.2em;nce">Science</option>
+      color: #222;lue="English">English</option>
+    }   <option value="Chemistry">Chemistry</option>
+    .welcome-card .tags {o">Geo</option>
+      display: flex;e="Biology">Biology</option>
+      flex-wrap: wrap;"Physics">Physics</option>
+      gap: 0.7em;alue="Arts">Arts</option>
+    }   <option value="Others">Others</option>
+    .welcome-card .tag {
+      background: #e0e7ff;er">
+      color: #7b2ff2;="">Date</option>
+      border-radius: 6px;west">Newest</option>
+      padding: 0.3em 1em;dest">Oldest</option>
+      font-size: 1em;
+      font-weight: 600;arityFilter">
+      letter-spacing: 0.5px;ularity</option>
+      margin-bottom: 0.2em;">Most Popular</option>
+      display: inline-block;">Least Popular</option>
+    } </select>
+  </style>
+</head>v class="notes-grid" id="notesGrid"></div>
+<body>v>
+  <nav class="topnav">
+    <div class="logo"><i class="fa-solid fa-book"></i> Study Buddy Hub</div>
+    <div class="user-area">
+      <div class="user-avatar" id="nav-avatar"></div>
+      <span id="nav-username"></span> (replace with your logic)
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  </nav>title: "Intro to Algebra",
+  <div class="nav-tabs">hnson",
+    <a href="dashboard.html" class="nav-tab active">Dashboard</a>
+    <a href="planner.html" class="nav-tab">Study Planner</a>ls with symbols and the rules for...",
+    <a href="groups.html" class="nav-tab">Study Groups</a>
+    <a href="notes.html" class="nav-tab">Notes</a>
+    <a href="profile.html" class="nav-tab">Profile</a>
+  </div>rating: 4.5,
+  <main class="dashboard-main">
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <div class="card-title">
+          Study Groups
+          <span class="card-icon">
+            <i class="fa-solid fa-users"></i>
+          </span>istory", "World War II", "Summary"],
+        </div>"World War II was a global conflict that lasted from 1939 to 1945 and involved...",
+        <div class="card-value" id="groups-count">2</div>
+        <div class="card-desc">Active memberships</div>
+      </div>Name: "wwii.pdf",
+      <div class="dashboard-card">
+        <div class="card-title">Shared Notes <span class="card-icon"><i class="fa-regular fa-file-lines"></i></span></div>
+        <div class="card-value" id="notes-count">5</div>
+        <div class="card-desc">Documents uploaded</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="card-title">Profile Status <span class="card-icon"><i class="fa-regular fa-user"></i></span></div>
+        <div class="card-value complete" id="profile-status">Complete</div>
+        <div class="card-desc">Profile updated</div>],
+      </div>: "Photosynthesis is the process used by plants to convert light energy into....",
+      <div class="dashboard-card">
+        <div class="card-title">Tasks <span class="card-icon"><i class="fa-regular fa-square-check"></i></span></div>
+        <div class="card-value" id="tasks-count">0</div>
+        <div class="card-desc">Pending tasks</div>
+      </div>ngCount: 15,
+    </div>te: "2024-06-15",
+    <div class="welcome-card">
+      <h2>Welcome to Study Buddy Hub!</h2>
+      <div class="subtitle">Your academic collaboration platform</div>
+      <div class="desc">Analysis",
+        Connect with fellow students, join study groups, share notes, and participate in academic discussions. Start by exploring the different sections using the tabs above.
+      </div>: ["English", "Shakespeare", "Macbeth"],
+      <div class="tags">of Shakespeare's Macbeth, focusing on character development and themes.",
+        <span class="tag">Mathematics</span>
+        <span class="tag">Computer Science</span>
+        <span class="tag">Physics</span>
+        <span class="tag">Chemistry</span>
+        <span class="tag">Biology</span>
+      </div>: "2024-06-12",
+    </div>pularity: 80
+  </main>
+  <script>
+  function logout() {
+    window.location.href = "login.html";
+  } let ratedNotes = {};
+
+  // Replace this function:
+  function updateUserProfile() {
+    let name = localStorage.getItem('userName');sGrid');
+    if (!name || name.trim() === "") {ntById('searchInput').value.trim().toLowerCase();
+      name = "User";= document.getElementById('subjectFilter').value;
+    } const date = document.getElementById('dateFilter').value;
+    document.getElementById('nav-username').textContent = name;ter').value;
+
+    const avatarDiv = document.getElementById('nav-avatar');
+    const photo = localStorage.getItem('profilePhoto');
+    if (photo && photo.trim() !== "") {
+      avatarDiv.innerHTML = `<img src="${photo}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      avatarDiv.style.background = "none";).includes(search) ||
+      avatarDiv.style.color = "inherit";c.toLowerCase().includes(search)) ||
+      avatarDiv.style.display = "inline-block";t => t.toLowerCase().includes(search)));
+      avatarDiv.style.alignItems = "unset";
+      avatarDiv.style.justifyContent = "unset";
+      avatarDiv.style.fontWeight = "unset";cludes(subject);
+      avatarDiv.style.fontSize = "unset";
+    } else {rn match;
+      avatarDiv.innerHTML = ""; // Clear any previous image
+      avatarDiv.textContent = name.charAt(0).toUpperCase();
+      avatarDiv.style.background = "#e0e7ff";
+      avatarDiv.style.color = "#7b2ff2";
+      avatarDiv.style.display = "flex";e(b.date) - new Date(a.date));
+      avatarDiv.style.alignItems = "center";
+      avatarDiv.style.justifyContent = "center"; - new Date(b.date));
+      avatarDiv.style.fontWeight = "700";
+      avatarDiv.style.fontSize = "1.1em";
+    } if (popularity === "most") {
+  }     filtered.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+      } else if (popularity === "least") {
+  function updateTasksCount() { (a.popularity || 0) - (b.popularity || 0));
+    const tasks = JSON.parse(localStorage.getItem('plannerTasks') || '[]');
+    const todoCount = tasks.filter(t => !t.completed).length;
+    document.getElementById('tasks-count').textContent = todoCount;
+  }   filtered.forEach((note, idx) => {
+        // Rating stars
+  // Call on page loads = '';
+  updateUserProfile();e.rating === "number" && note.ratingCount > 0) {
+  updateTasksCount();ed = Math.round(note.rating);
+          for (let i = 1; i <= 5; i++) {
+  // Optional: update profile info if localStorage changes (e.g., user switches)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'userName' || e.key === 'profilePhoto') {size:0.95rem;">(${note.rating.toFixed(1)}/5, ${note.ratingCount} ratings)</span>`;
+      updateUserProfile();
+    }   // Only show rate buttons if not rated yet
+  });   let rateButtons = '';
+  </script>(!ratedNotes[idx]) {
+</body>   rateButtons = `
+</html>     <div class="rate-row">
+              Rate this note:
+              <span>
+                <button onclick="rateNote(${idx},1)">1</button>
+                <button onclick="rateNote(${idx},2)">2</button>
+                <button onclick="rateNote(${idx},3)">3</button>
+                <button onclick="rateNote(${idx},4)">4</button>
+                <button onclick="rateNote(${idx},5)">5</button>
+              </span>
+            </div>
+          `;
+        } else {
+          rateButtons = `<div class="rate-row">You rated this note.</div>`;
+        }
+        grid.innerHTML += `
+          <div class="note-card" onclick="openNote(${idx})">
+            <div class="note-title">${note.title}</div>
+            <div class="note-author">By ${note.author}</div>
+            <div class="note-tags">
+              ${(note.tags || []).map(tag => `<span class="note-tag">${tag}</span>`).join('')}
+            </div>
+            <div class="note-desc">${note.desc || ""}</div>
+            <button class="view-btn" onclick="event.stopPropagation(); openNote(${idx});">View Note</button>
+            <div class="note-rating">${ratingStars}</div>
+            ${rateButtons}
+          </div>
+        `;
+      });
+    }
+
+    // Open note in same tab
+    function openNote(idx) {
+      const note = notes[idx];
+      if (note.type === "file" && note.fileURL) {
+        window.location.href = note.fileURL;
+      } else if (note.type === "link" && note.link) {
+        window.location.href = note.link;
+      }
+    }
+
+    // Rating logic
+    function rateNote(idx, stars) {
+      if (ratedNotes[idx]) return;
+      const note = notes[idx];
+      if (!note.ratingCount) note.ratingCount = 0;
+      if (!note.rating) note.rating = 0;
+      note.rating = ((note.rating * note.ratingCount) + stars) / (note.ratingCount + 1);
+      note.ratingCount += 1;
+      ratedNotes[idx] = true;
+      renderNotes();
+    }
+    window.rateNote = rateNote;
+    window.openNote = openNote;
+
+    // Filters and search events
+    document.getElementById('searchInput').addEventListener('input', renderNotes);
+    document.getElementById('subjectFilter').addEventListener('change', renderNotes);
+    document.getElementById('dateFilter').addEventListener('change', renderNotes);
+    document.getElementById('popularityFilter').addEventListener('change', renderNotes);
+
+    // Initial render
+    renderNotes();
+  </script>
+</body>
+</html>

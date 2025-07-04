@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Study Buddy Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: #f7f9fd;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      color: #222;
+    }
+    .topnav {
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 1.7em;
+      font-weight: 700;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      gap: 0.6em;
+      letter-spacing: 1px;
+    }
+    .logo i {
+      font-size: 1.1em;
+    }
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+    }
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+    .logout-btn {
+      background: #fff;
+      color: #7b2ff2;
+      border: 1.5px solid #7b2ff2;
+      border-radius: 7px;
+      padding: 0.4em 1.2em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .logout-btn:hover {
+      background: #7b2ff2;
+      color: #fff;
+    }
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 3em;
+      background: #f7f9fd;
+      border-radius: 16px;
+      padding: 0.7em 0;
+      margin: 2em auto 2.5em auto;
+      max-width: 1100px;
+    }
+    .nav-tab {
+      text-decoration: none;
+      font-size: 1.3em;
+      font-weight: 700;
+      color: #7b809a;
+      padding: 0.4em 2em;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+      background: none;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .nav-tab.active, .nav-tab:focus, .nav-tab:hover {
+      background: #fff;
+      color: #7b2ff2;
+      box-shadow: 0 2px 8px #e0e7ff33;
+    }
+    @media (max-width: 900px) {
+      .nav-tabs { gap: 1.2em; max-width: 98vw; }
+      .nav-tab { font-size: 1.1em; padding: 0.4em 1em; }
+    }
+    @media (max-width: 600px) {
+      .topnav { flex-direction: column; align-items: flex-start; gap: 0.7em; padding: 0.7em 1em; }
+      .nav-tabs { gap: 0.5em; padding: 0.3em 0.2em; margin: 1em auto 1em auto; }
+      .nav-tab { font-size: 1em; padding: 0.3em 0.7em; }
+    }
+    .dashboard-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2em 1em 1em 1em;
+    }
+    .dashboard-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2em;
+      justify-content: flex-start;
+      align-items: stretch;
+      margin-bottom: 2em;
+    }
+    .dashboard-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      padding: 1.5em 2em;
+      min-width: 220px;
+      max-width: 320px;
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: 1px solid #e0e7ff;
+    }
+    .dashboard-card:hover {
+      box-shadow: 0 8px 32px #7b2ff233;
+      transform: translateY(-4px) scale(1.03);
+    }
+    .dashboard-card .card-title {
+      font-size: 1.08em;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .dashboard-card .card-value {
+      font-size: 2em;
+      font-weight: 700;
+      color: #7b2ff2;
+      margin-bottom: 0.1em;
+    }
+    .dashboard-card .card-desc {
+      font-size: 1em;
+      color: #7b809a;
+      margin-bottom: 0.2em;
+    }
+    .dashboard-card .card-icon {
+      font-size: 1.3em;
+      color: #7b2ff2;
+      margin-left: auto;
+      opacity: 0.7;
+    }
+    .dashboard-card .card-value.complete {
+      color: #1db954;
+      font-size: 1.5em;
+    }
+    .welcome-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      padding: 2em 2.5em;
+      margin-bottom: 2em;
+      border: 1px solid #e0e7ff;
+    }
+    .welcome-card h2 {
+      margin: 0 0 0.2em 0;
+      font-size: 2em;
+      font-weight: 700;
+      color: #222;
+    }
+    .welcome-card .subtitle {
+      color: #7b809a;
+      font-size: 1.1em;
+      margin-bottom: 1em;
+    }
+    .welcome-card .desc {
+      font-size: 1.1em;
+      margin-bottom: 1.2em;
+      color: #222;
+    }
+    .welcome-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7em;
+    }
+    .welcome-card .tag {
+      background: #e0e7ff;
+      color: #7b2ff2;
+      border-radius: 6px;
+      padding: 0.3em 1em;
+      font-size: 1em;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.2em;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <div class="logo"><i class="fa-solid fa-book"></i> Study Buddy Hub</div>
+    <div class="user-area">
+      <div class="user-avatar" id="nav-avatar"></div>
+      <span id="nav-username"></span>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  </nav>
+  <div class="nav-tabs">
+    <a href="dashboard.html" class="nav-tab active">Dashboard</a>
+    <a href="planner.html" class="nav-tab">Study Planner</a>
+    <a href="groups.html" class="nav-tab">Study Groups</a>
+    <a href="notes.html" class="nav-tab">Notes</a>
+    <a href="profile.html" class="nav-tab">Profile</a>
+  </div>
+  <main class="dashboard-main">
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <div class="card-title">
+          Study Groups
+          <span class="card-icon">
+            <i class="fa-solid fa-users"></i>
+          </span>
+        </div>
+        <div class="card-value" id="groups-count">2</div>
+        <div class="card-desc">Active memberships</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="card-title">Shared Notes <span class="card-icon"><i class="fa-regular fa-file-lines"></i></span></div>
+        <div class="card-value" id="notes-count">5</div>
+        <div class="card-desc">Documents uploaded</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="card-title">Profile Status <span class="card-icon"><i class="fa-regular fa-user"></i></span></div>
+        <div class="card-value complete" id="profile-status">Complete</div>
+        <div class="card-desc">Profile updated</div>
+      </div>
+      <div class="dashboard-card">
+        <div class="card-title">Tasks <span class="card-icon"><i class="fa-regular fa-square-check"></i></span></div>
+        <div class="card-value" id="tasks-count">0</div>
+        <div class="card-desc">Pending tasks</div>
+      </div>
+    </div>
+    <div class="welcome-card">
+      <h2>Welcome to Study Buddy Hub!</h2>
+      <div class="subtitle">Your academic collaboration platform</div>
+      <div class="desc">
+        Connect with fellow students, join study groups, share notes, and participate in academic discussions. Start by exploring the different sections using the tabs above.
+      </div>
+      <div class="tags">
+        <span class="tag">Mathematics</span>
+        <span class="tag">Computer Science</span>
+        <span class="tag">Physics</span>
+        <span class="tag">Chemistry</span>
+        <span class="tag">Biology</span>
+      </div>
+    </div>
+  </main>
+  <script>
+  function logout() {
+    window.location.href = "login.html";
+  }
+
+  // Replace this function:
+  function updateUserProfile() {
+    let name = localStorage.getItem('userName');
+    if (!name || name.trim() === "") {
+      name = "User";
+    }
+    document.getElementById('nav-username').textContent = name;
+
+    const avatarDiv = document.getElementById('nav-avatar');
+    const photo = localStorage.getItem('profilePhoto');
+    if (photo && photo.trim() !== "") {
+      avatarDiv.innerHTML = `<img src="${photo}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      avatarDiv.style.background = "none";
+      avatarDiv.style.color = "inherit";
+      avatarDiv.style.display = "inline-block";
+      avatarDiv.style.alignItems = "unset";
+      avatarDiv.style.justifyContent = "unset";
+      avatarDiv.style.fontWeight = "unset";
+      avatarDiv.style.fontSize = "unset";
+    } else {
+      avatarDiv.innerHTML = ""; // Clear any previous image
+      avatarDiv.textContent = name.charAt(0).toUpperCase();
+      avatarDiv.style.background = "#e0e7ff";
+      avatarDiv.style.color = "#7b2ff2";
+      avatarDiv.style.display = "flex";
+      avatarDiv.style.alignItems = "center";
+      avatarDiv.style.justifyContent = "center";
+      avatarDiv.style.fontWeight = "700";
+      avatarDiv.style.fontSize = "1.1em";
+    }
+  }
+
+  function updateTasksCount() {
+    const tasks = JSON.parse(localStorage.getItem('plannerTasks') || '[]');
+    const todoCount = tasks.filter(t => !t.completed).length;
+    document.getElementById('tasks-count').textContent = todoCount;
+  }
+
+  // Call on page load
+  updateUserProfile();
+  updateTasksCount();
+
+  // Optional: update profile info if localStorage changes (e.g., user switches)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'userName' || e.key === 'profilePhoto') {
+      updateUserProfile();
+    }
+  });
+  </script>
+</body>
+</html>

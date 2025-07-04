@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Study Buddy Hub</title>tle>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: #f7f9fd;radient(135deg, #f7f9fd 0%, #e8edfa 100%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      color: #222;
+    }
+    .topnav {
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7em 2em;1.2em 2em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 1.7em;
+      font-weight: 700;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      gap: 0.6em;
+      letter-spacing: 1px;
+    }
+    .logo i {
+      font-size: 1.1em;
+    }
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+    }
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: #7b2ff2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+    .logout-btn {
+      background: #fff;
+      color: #7b2ff2;
+      border: 1.5px solid #7b2ff2;
+      border-radius: 7px;
+      padding: 0.4em 1.2em;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s; border 0.2s;
+    }
+    .logout-btn:hover {
+      background: #7b2ff2;
+      color: #fff;
+    } border-color: #7b2ff2;
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 3em;ontent: center;
+      background: #f7f9fd;
+      border-radius: 16px;
+      padding: 0.7em 0;px;
+      margin: 2em auto 2.5em auto;
+      max-width: 1100px;.5em auto;
+    } max-width: 1100px;
+    .nav-tab {ow: 0 2px 12px #e0e7ff22;
+      text-decoration: none;
+      font-size: 1.3em;
+      font-weight: 700;none;
+      color: #7b809a;em;
+      padding: 0.4em 2em;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+      background: none;px;
+      outline: none;ckground 0.2s, color 0.2s;
+      border: none;one;
+      cursor: pointer;
+      display: inline-block;
+    } cursor: pointer;
+    .nav-tab.active, .nav-tab:focus, .nav-tab:hover {
+      background: #fff;
+      color: #7b2ff2;.nav-tab:focus, .nav-tab:hover {
+      box-shadow: 0 2px 8px #e0e7ff33;
+    } color: #7b2ff2;
+    @media (max-width: 900px) {e7ff33;
+      .nav-tabs { gap: 1.2em; max-width: 98vw; }
+      .nav-tab { font-size: 1.1em; padding: 0.4em 1em; }
+    } max-width: 1200px;
+    @media (max-width: 600px) {
+      .topnav { flex-direction: column; align-items: flex-start; gap: 0.7em; padding: 0.7em 1em; }
+      .nav-tabs { gap: 0.5em; padding: 0.3em 0.2em; margin: 1em auto 1em auto; }
+      .nav-tab { font-size: 1em; padding: 0.3em 0.7em; }
+    } background: #fff;
+    .dashboard-main {18px;
+      max-width: 1200px;24px #e0e7ff33;
+      margin: 0 auto;id #e0e7ff;
+      padding: 2em 1em 1em 1em;
+    } overflow: hidden;
+    .dashboard-cards {2em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2em;flex;
+      justify-content: flex-start;
+      align-items: stretch;e-between;
+      margin-bottom: 2em;2em 2em;
+    } border-bottom: 1px solid #f0f0f0;
+    .dashboard-card {fafd;
+      background: #fff;
+      border-radius: 14px;{
+      box-shadow: 0 2px 12px #e0e7ff33;
+      padding: 1.5em 2em;
+      min-width: 220px;
+      max-width: 320px;2em;
+      flex: 1 1 220px;
+      display: flex;subtitle {
+      flex-direction: column;
+      gap: 0.5em;1.15em;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: 1px solid #e0e7ff;
+    } color: #4a90e2;
+    .dashboard-card:hover {
+      box-shadow: 0 8px 32px #7b2ff233;
+      transform: translateY(-4px) scale(1.03);
+    } display: flex;
+    .dashboard-card .card-title {
+      font-size: 1.08em;
+      font-weight: 600;
+      color: #222;r-btn {
+      margin-bottom: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;us: 10px;
+    } padding: 0.8em 2em;
+    .dashboard-card .card-value {
+      font-size: 2em;0;
+      font-weight: 700;
+      color: #7b2ff2;nter;
+      margin-bottom: 0.1em;
+    } cursor: pointer;
+    .dashboard-card .card-desc {s;
+      font-size: 1em;px 8px #e0e7ff33;
+      color: #7b809a;
+      margin-bottom: 0.2em;
+    } font-size: 1.1em;
+    .dashboard-card .card-icon {
+      font-size: 1.3em;:hover {
+      color: #7b2ff2;2ff2;
+      margin-left: auto;
+      opacity: 0.7;abs {
+    } display: flex;
+    .dashboard-card .card-value.complete {
+      color: #1db954; 0 2em;
+      font-size: 1.5em;fd;
+    } border-radius: 10px;
+    .welcome-card {m;
+      background: #fff;t;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px #e0e7ff33;
+      padding: 2em 2.5em;
+      margin-bottom: 2em;
+      border: 1px solid #e0e7ff;
+    } font-weight: 600;
+    .welcome-card h2 {
+      margin: 0 0 0.2em 0;
+      font-size: 2em;8px;
+      font-weight: 700;
+      color: #222;background 0.2s, color 0.2s;
+    }
+    .welcome-card .subtitle { .planner-type-tab:focus {
+      color: #7b809a;f;
+      font-size: 1.1em;
+      margin-bottom: 1em;px #e0e7ff33;
+    }
+    .welcome-card .desc {
+      font-size: 1.1em;
+      margin-bottom: 1.2em;n;
+      color: #222;
+    } padding: 2em;
+    .welcome-card .tags {
+      display: flex; 1px solid #f0f0f0;
+      flex-wrap: wrap;n 0.3s;
+      gap: 0.7em;
+    }planner-form input, .planner-form textarea, .planner-form select {
+    .welcome-card .tag {
+      background: #e0e7ff;
+      color: #7b2ff2;m;
+      border-radius: 6px;
+      padding: 0.3em 1em; #e0e7ff;
+      font-size: 1em;fafd;
+      font-weight: 600;2em;
+      letter-spacing: 0.5px;;
+      margin-bottom: 0.2em;2s;
+      display: inline-block;
+    }
+  </style>er-form input:focus, .planner-form textarea:focus, .planner-form select:focus {
+</head>utline: none;
+<body>border: 1.5px solid #7b2ff2;
+  <nav class="topnav">;
+    <div class="logo"><i class="fa-solid fa-book"></i> Study Buddy Hub</div>
+    <div class="user-area">
+      <div class="user-avatar" id="nav-avatar"></div>
+      <span id="nav-username"></span>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>er-form .planner-form-row > * {
+  </nav>ex: 1;
+  <div class="nav-tabs">
+    <a href="dashboard.html" class="nav-tab active">Dashboard</a>
+    <a href="planner.html" class="nav-tab">Study Planner</a>
+    <a href="groups.html" class="nav-tab">Study Groups</a>
+    <a href="notes.html" class="nav-tab">Notes</a>
+    <a href="profile.html" class="nav-tab">Profile</a>
+  </div>splay: flex;
+  <main class="dashboard-main">
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <div class="card-title">
+          Study Groups
+          <span class="card-icon">
+            <i class="fa-solid fa-users"></i>
+          </span>8em 2em;
+        </div>e: 1.1em;
+        <div class="card-value" id="groups-count">2</div>
+        <div class="card-desc">Active memberships</div>
+      </div>tion: background 0.2s;
+      <div class="dashboard-card">
+        <div class="card-title">Shared Notes <span class="card-icon"><i class="fa-regular fa-file-lines"></i></span></div>
+        <div class="card-value" id="notes-count">5</div>
+        <div class="card-desc">Documents uploaded</div>
+      </div>-form .cancel-task-btn {
+      <div class="dashboard-card">
+        <div class="card-title">Profile Status <span class="card-icon"><i class="fa-regular fa-user"></i></span></div>
+        <div class="card-value complete" id="profile-status">Complete</div>
+        <div class="card-desc">Profile updated</div>
+      </div>g: 0.8em 2em;
+      <div class="dashboard-card">
+        <div class="card-title">Tasks <span class="card-icon"><i class="fa-regular fa-square-check"></i></span></div>
+        <div class="card-value" id="tasks-count">0</div>
+        <div class="card-desc">Pending tasks</div>
+      </div>
+    </div>er-form .cancel-task-btn:hover {
+    <div class="welcome-card">
+      <h2>Welcome to Study Buddy Hub!</h2>
+      <div class="subtitle">Your academic collaboration platform</div>
+      <div class="desc"> {
+        Connect with fellow students, join study groups, share notes, and participate in academic discussions. Start by exploring the different sections using the tabs above.
+      </div> #7b809a;
+      <div class="tags">
+        <span class="tag">Mathematics</span>
+        <span class="tag">Computer Science</span>
+        <span class="tag">Physics</span>
+        <span class="tag">Chemistry</span>
+        <span class="tag">Biology</span>
+      </div>-tasks-list {
+    </div>-style: none;
+  </main>gin: 0;
+  <script>ing: 0 2em 0 2em;
+  function logout() {f;
+    window.location.href = "login.html";
+  } .planner-task-item {
+      display: flex;
+  // Replace this function:rt;
+  function updateUserProfile() {ween;
+    let name = localStorage.getItem('userName');
+    if (!name || name.trim() === "") {;
+      name = "User";
+    } font-size: 1.1em;
+    document.getElementById('nav-username').textContent = name;
+    }
+    const avatarDiv = document.getElementById('nav-avatar');
+    const photo = localStorage.getItem('profilePhoto');
+    if (photo && photo.trim() !== "") {
+      avatarDiv.innerHTML = `<img src="${photo}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      avatarDiv.style.background = "none";
+      avatarDiv.style.color = "inherit";
+      avatarDiv.style.display = "inline-block";
+      avatarDiv.style.alignItems = "unset";
+      avatarDiv.style.justifyContent = "unset";
+      avatarDiv.style.fontWeight = "unset";
+      avatarDiv.style.fontSize = "unset";-title {
+    } else {ecoration: line-through;
+      avatarDiv.innerHTML = ""; // Clear any previous image
+      avatarDiv.textContent = name.charAt(0).toUpperCase();
+      avatarDiv.style.background = "#e0e7ff";
+      avatarDiv.style.color = "#7b2ff2";
+      avatarDiv.style.display = "flex";
+      avatarDiv.style.alignItems = "center";
+      avatarDiv.style.justifyContent = "center";
+      avatarDiv.style.fontWeight = "700";
+      avatarDiv.style.fontSize = "1.1em";
+    } color: #7b809a;
+  }   margin-top: 0.2em;
+      display: flex;
+  function updateTasksCount() {
+    const tasks = JSON.parse(localStorage.getItem('plannerTasks') || '[]');
+    const todoCount = tasks.filter(t => !t.completed).length;
+    document.getElementById('tasks-count').textContent = todoCount;
+  }   display: inline-flex;
+      align-items: center;
+  // Call on page load
+  updateUserProfile();;
+  updateTasksCount();
+    .priority-high { color: #e74c3c;}
+  // Optional: update profile info if localStorage changes (e.g., user switches)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'userName' || e.key === 'profilePhoto') {
+      updateUserProfile();
+    } font-weight: 600;
+  }); display: flex;
+  </script>-items: center;
+</body>ap: 0.3em;
+</html>
+    .planner-task-actions button {
+      background: none;
+      border: none;
+      color: #4a90e2;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin-left: 0.5em;
+      transition: color 0.2s;
+    }
+    .planner-task-actions button:hover {
+      color: #e74c3c;
+    }
+    @media (max-width: 900px) {
+      .planner-container { padding: 0 0.5em; }
+      .planner-card { margin-bottom: 1em; }
+      .planner-header, .planner-form, .planner-tasks-list { padding-left: 1em; padding-right: 1em; }
+      .nav-tabs { gap: 1.2em; max-width: 98vw; }
+      .nav-tab { font-size: 1.1em; padding: 0.4em 1em; }
+    }
+    @media (max-width: 600px) {
+      .topnav { flex-direction: column; align-items: flex-start; gap: 0.7em; padding: 0.7em 1em; }
+      .planner-header, .planner-form, .planner-tasks-list { padding-left: 0.5em; padding-right: 0.5em; }
+      .planner-header { flex-direction: column; align-items: flex-start; gap: 1em; }
+      .planner-container { margin-top: 1em; }
+      .nav-tabs { gap: 0.5em; padding: 0.3em 0.2em; margin: 1em auto 1em auto; }
+      .nav-tab { font-size: 1em; padding: 0.3em 0.7em; }
+      .planner-type-tabs { margin: 1em 0 0 0; }
+    }
+  </style>
+  <script>
+    // Apply dark mode before page renders
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+      document.body && document.body.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.body && document.body.classList.remove("dark");
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900 min-h-screen py-8 px-2 transition">
+  <nav class="topnav">
+    <div class="logo"><i class="fa-solid fa-book"></i> <span style="color:#7b2ff2">Study Buddy Hub</span></div>
+    <div class="user-area">
+      <div class="user-avatar" id="nav-avatar">V</div>
+      <span id="nav-username" class="ml-6 font-bold text-purple-600"></span>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+  </nav>
+  <div class="nav-tabs">
+    <a href="dashboard.html" class="nav-tab">Dashboard</a>
+    <a href="Planner.html" class="nav-tab active">Study Planner</a>
+    <a href="groups.html" class="nav-tab">Study Groups</a>
+    <a href="notes.html" class="nav-tab">Notes</a>
+    <a href="discussions.html" class="nav-tab">Discussions</a>
+    <a href="profile.html" class="nav-tab">Profile</a>
+  </div>
+  <div class="planner-container">
+    <div class="planner-card">
+      <div class="planner-header">
+        <div>
+          <div class="planner-header-title">Study Planner &amp; To-Do List</div>
+          <div class="planner-header-subtitle">Organize your study goals and homework tasks</div>
+          <div class="planner-header-deadline">
+            <i class="fa-regular fa-clock"></i>
+            <span>Choose <b>Task</b> or <b>Event</b>. Events require a deadline, tasks do not.</span>
+          </div>
+        </div>
+        <button class="planner-header-btn" id="showTaskFormBtn"><i class="fa-solid fa-plus"></i> Add</button>
+      </div>
+      <div class="planner-type-tabs">
+        <button class="planner-type-tab active" id="tabTasks" type="button"><i class="fa-solid fa-list-check"></i> Tasks</button>
+        <button class="planner-type-tab" id="tabEvents" type="button"><i class="fa-solid fa-calendar-days"></i> Events</button>
+      </div>
+      <form class="planner-form" id="plannerForm">
+        <div class="planner-form-row">
+          <select id="taskType" required>
+            <option value="task">Task</option>
+            <option value="event">Event</option>
+          </select>
+          <input type="text" id="taskTitle" placeholder="Title" required>
+        </div>
+        <textarea id="taskDesc" placeholder="Description (optional)" rows="2"></textarea>
+        <div class="planner-form-row" id="deadlineRow" style="display:none;">
+          <input type="date" id="taskDate">
+          <input type="time" id="taskTime">
+        </div>
+        <div class="planner-form-row">
+          <select id="taskPriority">
+            <option value="normal">&#128309; Normal</option>
+            <option value="high">&#128308; High</option>
+            <option value="low">&#128994; Low</option>
+          </select>
+        </div>
+        <div class="planner-form-actions">
+          <button type="submit" class="add-task-btn">Add</button>
+          <button type="button" class="cancel-task-btn" id="cancelTaskBtn">Cancel</button>
+        </div>
+      </form>
+      <div id="plannerTasksEmpty" class="planner-tasks-empty">
+        No tasks or events yet. Add your first!
+      </div>
+      <ul class="planner-tasks-list" id="plannerTasksList" style="display:none;"></ul>
+    </div>
+  </div>
+  <script>
+    let plannerTasks = [];
+    let currentTab = 'task'; // 'task' or 'event'
+    const showTaskFormBtn = document.getElementById('showTaskFormBtn');
+    const plannerForm = document.getElementById('plannerForm');
+    const cancelTaskBtn = document.getElementById('cancelTaskBtn');
+    const plannerTasksEmpty = document.getElementById('plannerTasksEmpty');
+    const plannerTasksList = document.getElementById('plannerTasksList');
+    const taskType = document.getElementById('taskType');
+    const taskTitle = document.getElementById('taskTitle');
+    const taskDesc = document.getElementById('taskDesc');
+    const taskDate = document.getElementById('taskDate');
+    const taskTime = document.getElementById('taskTime');
+    const taskPriority = document.getElementById('taskPriority');
+    const deadlineRow = document.getElementById('deadlineRow');
+    const tabTasks = document.getElementById('tabTasks');
+    const tabEvents = document.getElementById('tabEvents');
+
+    function savePlannerTasks() {
+      localStorage.setItem('plannerTasks', JSON.stringify(plannerTasks));
+    }
+    function loadPlannerTasks() {
+      const data = localStorage.getItem('plannerTasks');
+      plannerTasks = data ? JSON.parse(data) : [];
+    }
+    function getRemainingTime(date, time) {
+      if (!date || !time) return '';
+      const now = new Date();
+      const taskDateTime = new Date(`${date}T${time}`);
+      const diff = taskDateTime - now;
+      if (diff <= 0) return '<span style="color:#e74c3c;">Expired</span>';
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const days = Math.floor(hours / 24);
+      const remHours = hours % 24;
+      if (days > 0) return `${days}d ${remHours}h ${mins}m left`;
+      if (hours > 0) return `${hours}h ${mins}m left`;
+      return `${mins}m left`;
+    }
+    function renderPlannerTasks() {
+      // Filter by current tab
+      const filtered = plannerTasks.filter(t => t.type === currentTab);
+      if (filtered.length === 0) {
+        plannerTasksEmpty.style.display = '';
+        plannerTasksList.style.display = 'none';
+        plannerTasksEmpty.textContent = currentTab === 'task'
+          ? "No tasks yet. Add your first task!"
+          : "No events yet. Add your first event!";
+        return;
+      }
+      plannerTasksEmpty.style.display = 'none';
+      plannerTasksList.style.display = '';
+      plannerTasksList.innerHTML = '';
+      filtered.forEach((task, idx) => {
+        let deadlineHTML = '';
+        let remaining = '';
+        if (task.type === 'event' && task.date && task.time) {
+          deadlineHTML = `<span class="planner-task-deadline"><i class="fa-regular fa-clock"></i> Deadline: ${task.date} ${task.time}</span>`;
+          remaining = getRemainingTime(task.date, task.time);
+        }
+        plannerTasksList.innerHTML += `
+          <li class="planner-task-item${task.completed ? ' planner-task-completed' : ''}">
+            <div class="planner-task-main">
+              <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="togglePlannerTask(${plannerTasks.indexOf(task)})" style="margin-right:0.7em;">
+              <span class="planner-task-title">${task.title}</span>
+              ${task.desc ? `<div class="planner-task-desc">${task.desc}</div>` : ''}
+              <div class="planner-task-meta">
+                ${deadlineHTML}
+                <span class="planner-task-priority priority-${task.priority}">
+                  <i class="fa-solid fa-circle"></i> ${task.priority.charAt(0).toUpperCase()+task.priority.slice(1)}
+                </span>
+                ${remaining ? `<span>${remaining}</span>` : ''}
+              </div>
+            </div>
+            <div class="planner-task-actions">
+              <button title="Delete" onclick="deletePlannerTask(${plannerTasks.indexOf(task)})"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </li>
+        `;
+      });
+      savePlannerTasks();
+    }
+    function addPlannerTask(task) {
+      plannerTasks.push(task);
+      renderPlannerTasks();
+    }
+    function togglePlannerTask(idx) {
+      plannerTasks[idx].completed = !plannerTasks[idx].completed;
+      renderPlannerTasks();
+    }
+    function deletePlannerTask(idx) {
+      plannerTasks.splice(idx, 1);
+      renderPlannerTasks();
+    }
+    window.togglePlannerTask = togglePlannerTask;
+    window.deletePlannerTask = deletePlannerTask;
+
+    showTaskFormBtn.onclick = function() {
+      plannerForm.style.display = 'flex';
+      showTaskFormBtn.style.display = 'none';
+      taskTitle.focus();
+      // Set form type to current tab
+      taskType.value = currentTab;
+      taskType.dispatchEvent(new Event('change'));
+    };
+    cancelTaskBtn.onclick = function() {
+      plannerForm.reset();
+      plannerForm.style.display = 'none';
+      showTaskFormBtn.style.display = '';
+      deadlineRow.style.display = 'none';
+    };
+    taskType.onchange = function() {
+      if (taskType.value === 'event') {
+        deadlineRow.style.display = 'flex';
+        taskDate.required = true;
+        taskTime.required = true;
+      } else {
+        deadlineRow.style.display = 'none';
+        taskDate.required = false;
+        taskTime.required = false;
+      }
+    };
+    plannerForm.onsubmit = function(e) {
+      e.preventDefault();
+      const type = taskType.value;
+      const title = taskTitle.value.trim();
+      const desc = taskDesc.value.trim();
+      const date = taskDate.value;
+      const time = taskTime.value;
+      const priority = taskPriority.value;
+      if (!title) return;
+      if (type === 'event') {
+        if (!date || !time) {
+          alert("Please select a deadline date and time for events.");
+          return;
+        }
+        const now = new Date();
+        const taskDateTime = new Date(`${date}T${time}`);
+        if (taskDateTime < now) {
+          alert("Please select a date and time in the future.");
+          return;
+        }
+      }
+      addPlannerTask({
+        type,
+        title,
+        desc,
+        date: type === 'event' ? date : '',
+        time: type === 'event' ? time : '',
+        priority,
+        completed: false
+      });
+      plannerForm.reset();
+      plannerForm.style.display = 'none';
+      showTaskFormBtn.style.display = '';
+      deadlineRow.style.display = 'none';
+    };
+
+    tabTasks.onclick = function() {
+      currentTab = 'task';
+      tabTasks.classList.add('active');
+      tabEvents.classList.remove('active');
+      renderPlannerTasks();
+    };
+    tabEvents.onclick = function() {
+      currentTab = 'event';
+      tabEvents.classList.add('active');
+      tabTasks.classList.remove('active');
+      renderPlannerTasks();
+    };
+
+    loadPlannerTasks();
+    renderPlannerTasks();
+
+    // Show username in nav on load
+    document.getElementById("nav-username").textContent = localStorage.getItem("userName") || "User";
+
+    // Sync username and avatar from localStorage
+    function updateNavProfile() {
+      const userName = localStorage.getItem("userName") || "User";
+      const userPhoto = localStorage.getItem("profilePhoto");
+      const navUsername = document.getElementById("nav-username");
+      const navAvatar = document.getElementById("nav-avatar");
+      navUsername.textContent = userName;
+      if (userPhoto) {
+        navAvatar.innerHTML = `<img src="${userPhoto}" alt="${userName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        navAvatar.textContent = userName.charAt(0).toUpperCase();
+        navAvatar.style.background = "#4a90e2";
+        navAvatar.style.color = "#fff";
+        navAvatar.style.display = "flex";
+        navAvatar.style.alignItems = "center";
+        navAvatar.style.justifyContent = "center";
+        navAvatar.style.fontWeight = "bold";
+        navAvatar.style.fontSize = "1.2em";
+      }
+    }
+    updateNavProfile();
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

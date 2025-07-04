@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Study Buddy Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-white min-h-screen py-8 px-2 transition">
+  <div class="nav-tabs flex justify-center gap-6 mb-8">
+    <a href="dashboard.html" class="nav-tab">Dashboard</a>
+    <a href="planner.html" class="nav-tab">Study Planner</a>
+    <a href="groups.html" class="nav-tab">Study Groups</a>
+    <a href="notes.html" class="nav-tab">Notes</a>
+    <a href="profile.html" class="nav-tab active">Profile</a>
+    <span id="nav-username" class="ml-6 font-bold text-purple-600"></span>
+    <span id="nav-avatar" class="w-8 h-8 rounded-full bg-purple-400 text-white font-bold flex items-center justify-center"></span>
+  </div>
+  <div class="max-w-4xl mx-auto">
+    <!-- User Name & Avatar -->
+    <div class="flex flex-col items-center mb-8">
+      <div class="relative">
+        <img id="profile-avatar-img" src="" alt="Profile Photo" class="w-24 h-24 rounded-full object-cover bg-gradient-to-br from-purple-400 to-pink-400 text-white text-4xl font-bold shadow-lg mb-2 border-4 border-white" />
+        <label for="avatar-upload" class="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow cursor-pointer hover:bg-purple-100 transition">
+          <i class="fa-solid fa-camera text-purple-500"></i>
+        </label>
+        <input type="file" id="avatar-upload" accept="image/*" class="hidden" />
+      </div>
+      <input
+        id="profile-name"
+        class="text-2xl font-bold text-center bg-transparent border-b-2 border-purple-300 focus:border-purple-500 outline-none transition w-48 mb-1"
+        value="User"
+        maxlength="24"
+      />
+      <div class="text-gray-500 text-sm">American University of Phnom Penh</div>
+    </div>
+    <!-- Responsive Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Study Goals Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-bullseye text-purple-400"></i>
+          <span class="font-semibold text-lg">Study Goal</span>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <input id="goal-input" type="number" min="1" max="1000" class="w-20 px-2 py-1 border border-purple-300 rounded text-lg text-center" placeholder="Hours" />
+          <button id="set-goal-btn" class="px-3 py-1 rounded bg-purple-400 text-white font-semibold hover:bg-purple-500 transition text-sm">Set Goal</button>
+        </div>
+        <div id="goal-hours" class="text-5xl font-bold text-purple-500 mb-2">10h</div>
+        <div class="text-gray-500 mb-2">Weekly Goal</div>
+        <div class="w-full bg-purple-100 rounded-full h-4 mb-2">
+          <div id="goal-progress" class="bg-gradient-to-r from-purple-400 to-pink-400 h-4 rounded-full transition-all" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between text-sm text-gray-500">
+          <span id="studied-hours">0h studied</span>
+          <span id="goal-percent">0%</span>
+        </div>
+      </div>
+      <!-- Pomodoro Timer Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-clock text-pink-400"></i>
+          <span class="font-semibold text-lg">Pomodoro Timer</span>
+        </div>
+        <div id="pomodoro-timer" class="text-4xl font-mono mb-2">25:00</div>
+        <div class="flex gap-2">
+          <button id="pomodoro-start" class="px-3 py-1 rounded bg-green-500 text-white font-semibold hover:bg-green-600 transition">Start</button>
+          <button id="pomodoro-pause" class="px-3 py-1 rounded bg-yellow-400 text-white font-semibold hover:bg-yellow-500 transition">Pause</button>
+          <button id="pomodoro-reset" class="px-3 py-1 rounded bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition">Reset</button>
+        </div>
+      </div>
+      <!-- Stats Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-chart-bar text-blue-400"></i>
+          <span class="font-semibold text-lg">Stats</span>
+        </div>
+        <div class="mb-2">
+          <span id="total-hours" class="font-bold text-3xl text-blue-500">0h</span>
+          <span class="text-gray-500 ml-2">Total Studied</span>
+        </div>
+        <div class="mb-2">
+          <div class="text-gray-500 mb-1">Subject Breakdown:</div>
+          <div class="flex gap-2 flex-wrap" id="subject-breakdown"></div>
+        </div>
+        <div class="text-gray-500">Best Study Time: <span class="font-semibold text-blue-400">-</span></div>
+      </div>
+      <!-- Achievements Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-medal text-yellow-400"></i>
+          <span class="font-semibold text-lg">Achievements</span>
+        </div>
+        <div id="achievements-list" class="flex gap-3 mb-3"></div>
+        <button class="mt-2 px-4 py-1 rounded bg-yellow-400 text-white font-semibold hover:bg-yellow-500 transition text-sm">
+          See More
+        </button>
+      </div>
+      <!-- Course Objectives Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition md:col-span-2">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-list-check text-green-400"></i>
+          <span class="font-semibold text-lg">Courses Objectives</span>
+        </div>
+        <div id="course-objectives" class="flex flex-col gap-2"></div>
+      </div>
+      <!-- Charts Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition md:col-span-2">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-chart-pie text-purple-400"></i>
+          <span class="font-semibold text-lg">Study Analytics</span>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6">
+          <div class="flex-1">
+            <canvas id="pieChart"></canvas>
+          </div>
+          <div class="flex-1">
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <!-- Settings Card -->
+      <div class="rounded-2xl bg-white shadow-lg p-6 flex flex-col hover:shadow-2xl transition md:col-span-2">
+        <div class="flex items-center gap-2 mb-2">
+          <i class="fa-solid fa-gear text-gray-400"></i>
+          <span class="font-semibold text-lg">Settings</span>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 items-center">
+          <div class="flex flex-col">
+            <label class="text-sm text-gray-500 mb-1">Change Username</label>
+            <input
+              id="settings-username"
+              class="rounded px-2 py-1 border border-purple-200 focus:border-purple-400 outline-none transition w-48"
+              maxlength="24"
+            />
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-gray-500">Notifications</label>
+            <button id="notify-toggle" class="w-10 h-6 rounded-full flex items-center transition bg-green-400" aria-label="Toggle notifications">
+              <span class="w-5 h-5 bg-white rounded-full shadow transform transition translate-x-4"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // --- User Name Logic ---
+    function setName(name) {
+      localStorage.setItem("userName", name);
+      document.getElementById("profile-name").value = name;
+      document.getElementById("settings-username").value = name;
+      document.getElementById("nav-username").textContent = name;
+      updateNavProfile();
+      if (!localStorage.getItem("profilePhoto")) {
+        document.getElementById("profile-avatar-img").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=9f7aea&color=fff&size=128`;
+      }
+    }
+    function getName() {
+      return localStorage.getItem("userName") || "User";
+    }
+    // --- Profile Photo Logic ---
+    function setProfilePhoto(dataUrl) {
+      localStorage.setItem("profilePhoto", dataUrl);
+      document.getElementById("profile-avatar-img").src = dataUrl;
+      updateNavProfile();
+    }
+    function loadProfilePhoto() {
+      const photo = localStorage.getItem("profilePhoto");
+      if (photo) {
+        document.getElementById("profile-avatar-img").src = photo;
+      } else {
+        const name = getName();
+        document.getElementById("profile-avatar-img").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=9f7aea&color=fff&size=128`;
+      }
+    }
+    document.getElementById("avatar-upload").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        setProfilePhoto(evt.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // --- Per-user Study Goal and Progress ---
+    // Use userName as key for per-user data
+    function getUserKey(key) {
+      return (localStorage.getItem("userName") || "User") + "_" + key;
+    }
+    // Initialize study goal and studied hours for this user
+    let goal = Number(localStorage.getItem(getUserKey("studyGoal")) || 0);
+    let studied = Number(localStorage.getItem(getUserKey("studyHours")) || 0);
+
+    // --- Daily Study Data for Line Chart (Monday to Sunday) ---
+    let studyDays = JSON.parse(localStorage.getItem(getUserKey("studyDays")) || '[0,0,0,0,0,0,0]');
+    function saveStudyDays() {
+      localStorage.setItem(getUserKey("studyDays"), JSON.stringify(studyDays));
+    }
+
+    // --- Courses Objectives Data ---
+    let courses = [
+      { name: "Math", objective: 20 },
+      { name: "Physics", objective: 15 },
+      { name: "Chemistry", objective: 10 }
+    ];
+    let courseProgress = JSON.parse(localStorage.getItem(getUserKey("courseProgress")) || '[0,0,0]');
+
+    // --- Achievements Logic ---
+    let achievementTasks = [
+      { icon: "📚", label: "Read a chapter" },
+      { icon: "📝", label: "Take notes" },
+      { icon: "🤝", label: "Join a group study" },
+      { icon: "💡", label: "Solve a hard problem" },
+      { icon: "🔬", label: "Complete a lab" }
+    ];
+    let unlockedAchievements = JSON.parse(localStorage.getItem(getUserKey("unlockedAchievements")) || '[]');
+
+    function updateAchievements() {
+      const achDiv = document.getElementById("achievements-list");
+      if (unlockedAchievements.length === 0) {
+        achDiv.innerHTML = "<div style='color:#aaa;'>No achievements yet.</div>";
+      } else {
+        achDiv.innerHTML = unlockedAchievements.map(idx =>
+          `<div class="flex flex-col items-center"><div class="text-3xl">${achievementTasks[idx].icon}</div><div class="text-xs text-gray-500">${achievementTasks[idx].label}</div></div>`
+        ).join("");
+      }
+    }
+
+    // --- Simulate 1 hour of study every hour (for demo, change 3600000 to 5000) ---
+    setInterval(() => {
+      studied++;
+      // Update today's study (simulate today as new Date().getDay())
+      const today = (new Date().getDay() + 6) % 7; // Monday=0, Sunday=6
+      studyDays[today]++;
+      saveStudyDays();
+      // Randomly unlock an achievement if not all unlocked
+      if (unlockedAchievements.length < achievementTasks.length) {
+        let idx;
+        do {
+          idx = Math.floor(Math.random() * achievementTasks.length);
+        } while (unlockedAchievements.includes(idx));
+        unlockedAchievements.push(idx);
+        localStorage.setItem(getUserKey("unlockedAchievements"), JSON.stringify(unlockedAchievements));
+      }
+      // Randomly update course progress
+      courseProgress = courseProgress.map((v, i) =>
+        Math.min(courses[i].objective, v + Math.floor(Math.random() * 2))
+      );
+      localStorage.setItem(getUserKey("courseProgress"), JSON.stringify(courseProgress));
+      updateGoal();
+      updateAchievements();
+      updateStats();
+      updateCharts();
+      updateObjectives();
+    }, 3600000); // Change to 5000 for demo/testing
+
+    // --- Study Goal UI ---
+    function updateGoal() {
+      const percent = goal === 0 ? 0 : Math.min(100, Math.round((studied / goal) * 100));
+      document.getElementById("goal-hours").textContent = goal + "h";
+      document.getElementById("studied-hours").textContent = studied + "h studied";
+      document.getElementById("goal-percent").textContent = percent + "%";
+      document.getElementById("goal-progress").style.width = percent + "%";
+      localStorage.setItem(getUserKey("studyGoal"), goal);
+      localStorage.setItem(getUserKey("studyHours"), studied);
+    }
+    document.getElementById("set-goal-btn").onclick = function() {
+      const val = parseInt(document.getElementById("goal-input").value, 10);
+      if (!isNaN(val) && val > 0) {
+        goal = val;
+        studied = 0; // Reset studied hours when setting a new goal
+        localStorage.setItem(getUserKey("studyHours"), studied);
+        updateGoal();
+        updateStats();
+        updateObjectives();
+        updateCharts();
+      }
+    };
+
+    // --- Stats Logic ---
+    function updateStats() {
+      document.getElementById("total-hours").textContent = studied + "h";
+      const breakdown = [
+        { subject: "Math", hours: courseProgress[0] },
+        { subject: "Physics", hours: courseProgress[1] },
+        { subject: "Chemistry", hours: courseProgress[2] }
+      ];
+      document.getElementById("subject-breakdown").innerHTML = breakdown.map(b =>
+        `<div class="rounded-lg px-2 py-1 text-white text-sm font-semibold bg-blue-400">${b.subject}: ${b.hours}h</div>`
+      ).join("");
+    }
+
+    // --- Course Objectives UI ---
+    function updateObjectives() {
+      const objDiv = document.getElementById("course-objectives");
+      objDiv.innerHTML = courses.map((c, i) => {
+        const percent = Math.round((courseProgress[i] / c.objective) * 100);
+        return `
+          <div>
+            <div class="flex justify-between mb-1">
+              <span>${c.name}</span>
+              <span>${percent}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
+              <div class="bg-gradient-to-r from-green-400 to-blue-400 h-3 rounded-full transition-all" style="width: ${percent}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // --- Chart.js Pie and Line Chart ---
+    let pieChart, lineChart;
+    function updateCharts() {
+      // Pie chart: subject breakdown
+      const pieData = {
+        labels: courses.map(c => c.name),
+        datasets: [{
+          data: courseProgress,
+          backgroundColor: ["#7b2ff2", "#f357a8", "#1db954"]
+        }]
+      };
+      if (!pieChart) {
+        pieChart = new Chart(document.getElementById("pieChart"), {
+          type: "pie",
+          data: pieData,
+          options: { responsive: true, plugins: { legend: { position: "bottom" } } }
+        });
+      } else {
+        pieChart.data = pieData;
+        pieChart.update();
+      }
+      // Line chart: study time per day
+      const lineData = {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+          label: "Hours Studied",
+          data: studyDays,
+          borderColor: "#7b2ff2",
+          backgroundColor: "rgba(123,47,242,0.1)",
+          fill: true,
+          tension: 0.3
+        }]
+      };
+      if (!lineChart) {
+        lineChart = new Chart(document.getElementById("lineChart"), {
+          type: "line",
+          data: lineData,
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+          }
+        });
+      } else {
+        lineChart.data = lineData;
+        lineChart.update();
+      }
+    }
+
+    // --- Pomodoro Timer Logic ---
+    let pomodoroSeconds = 25 * 60;
+    let pomodoroInterval = null;
+    function updatePomodoro() {
+      const mm = String(Math.floor(pomodoroSeconds / 60)).padStart(2, "0");
+      const ss = String(pomodoroSeconds % 60).padStart(2, "0");
+      document.getElementById("pomodoro-timer").textContent = mm + ":" + ss;
+    }
+    function pomodoroStart() {
+      if (pomodoroInterval) return;
+      pomodoroInterval = setInterval(() => {
+        if (pomodoroSeconds > 0) {
+          pomodoroSeconds--;
+          updatePomodoro();
+        } else {
+          clearInterval(pomodoroInterval);
+          pomodoroInterval = null;
+        }
+      }, 1000);
+    }
+    function pomodoroPause() {
+      if (pomodoroInterval) {
+        clearInterval(pomodoroInterval);
+        pomodoroInterval = null;
+      }
+    }
+    function pomodoroReset() {
+      pomodoroPause();
+      pomodoroSeconds = 25 * 60;
+      updatePomodoro();
+    }
+    document.getElementById("pomodoro-start").onclick = pomodoroStart;
+    document.getElementById("pomodoro-pause").onclick = pomodoroPause;
+    document.getElementById("pomodoro-reset").onclick = pomodoroReset;
+    updatePomodoro();
+
+    // Notifications
+    let notify = true;
+    function updateNotify() {
+      document.getElementById("notify-toggle").classList.toggle("bg-green-400", notify);
+      document.getElementById("notify-toggle").classList.toggle("bg-gray-300", !notify);
+      document.getElementById("notify-toggle").children[0].classList.toggle("translate-x-4", notify);
+    }
+    document.getElementById("notify-toggle").onclick = function() {
+      notify = !notify;
+      updateNotify();
+    };
+    updateNotify();
+
+    // Sync username and avatar from localStorage for navbar
+    function updateNavProfile() {
+      const userName = localStorage.getItem("userName") || "User";
+      const userPhoto = localStorage.getItem("profilePhoto");
+      const navUsername = document.getElementById("nav-username");
+      const navAvatar = document.getElementById("nav-avatar");
+      navUsername.textContent = userName;
+      if (userPhoto) {
+        navAvatar.innerHTML = `<img src="${userPhoto}" alt="${userName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        navAvatar.style.background = "none";
+        navAvatar.style.color = "inherit";
+        navAvatar.style.display = "inline-block";
+        navAvatar.style.alignItems = "unset";
+        navAvatar.style.justifyContent = "unset";
+        navAvatar.style.fontWeight = "unset";
+        navAvatar.style.fontSize = "unset";
+      } else {
+        navAvatar.textContent = userName.charAt(0).toUpperCase();
+        navAvatar.style.background = "#4a90e2";
+        navAvatar.style.color = "#fff";
+        navAvatar.style.display = "flex";
+        navAvatar.style.alignItems = "center";
+        navAvatar.style.justifyContent = "center";
+        navAvatar.style.fontWeight = "bold";
+        navAvatar.style.fontSize = "1.2em";
+      }
+    }
+
+    // --- Init all ---
+    setName(getName());
+    loadProfilePhoto();
+    document.getElementById("profile-name").addEventListener("input", e => setName(e.target.value));
+    document.getElementById("settings-username").addEventListener("input", e => setName(e.target.value));
+    updateGoal();
+    updateAchievements();
+    updateStats();
+    updateObjectives();
+    updateCharts();
+    updateNavProfile();
+  </script>
+</body>
+</html>
